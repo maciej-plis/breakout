@@ -1,0 +1,34 @@
+
+../spritesheet/loading.png
+size: 128, 128
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+white-pixel
+  rotate: false
+  xy: 84, 85
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+loading-font
+  rotate: false
+  xy: 1, 69
+  size: 81, 17
+  orig: 81, 17
+  offset: 0, 0
+  index: -1
+horizontal-progress-bar-knob
+  rotate: false
+  xy: 1, 1
+  size: 28, 28
+  orig: 28, 28
+  offset: 0, 0
+  index: -1
+progress-bar
+  rotate: false
+  xy: 1, 31
+  size: 36, 36
+  orig: 36, 36
+  offset: 0, 0
+  index: -1
