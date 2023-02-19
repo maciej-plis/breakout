@@ -1,12 +1,13 @@
 package com.matthias.breakout
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input.Keys.DOWN
-import com.badlogic.gdx.Input.Keys.UP
+import com.badlogic.gdx.Input.Keys.*
 import com.badlogic.gdx.math.Interpolation.bounceOut
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputEvent.Type.touchDown
+import com.badlogic.gdx.scenes.scene2d.InputEvent.Type.touchUp
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.Touchable.enabled
@@ -17,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.matthias.breakout.assets.SkinAsset.MENU_SKIN
+import ktx.actors.onKeyDown
+import ktx.actors.onKeyUp
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
 import ktx.assets.async.AssetStorage
@@ -78,13 +81,31 @@ class MenuScreen(
             }
         })
 
+        quitBtn.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                Gdx.app.exit()
+                return super.clicked(event, x, y)
+            }
+        })
+
         buttons.forEach { button ->
-            button?.addListener(object : InputListener() {
+            button?.addListener(object : ClickListener() {
                 override fun mouseMoved(event: InputEvent?, x: Float, y: Float): Boolean {
-                    if (button.isOver) stage.keyboardFocus = button
-                    return false
+                    if (isOver) stage.keyboardFocus = button
+                    return super.mouseMoved(event, x, y)
                 }
             })
+            button?.onKeyDown { keyCode ->
+                if (keyCode == ENTER) {
+                    stage.keyboardFocus?.fire(InputEvent().apply { type = touchDown })
+                    runOption()
+                }
+            }
+            button?.onKeyUp { keyCode ->
+                if (keyCode == ENTER) {
+                    stage.keyboardFocus?.fire(InputEvent().apply { type = touchUp })
+                }
+            }
         }
 
         stage.draw() // Single stage draw to compute actors position
@@ -101,6 +122,12 @@ class MenuScreen(
         val focused = stage.keyboardFocus
         val index = buttons.indexOf(focused)
         stage.keyboardFocus = buttons[min(index + 1, buttons.lastIndex)]
+    }
+
+    private fun runOption() {
+        when (stage.keyboardFocus.name) {
+            "quit-button" -> Gdx.app.exit()
+        }
     }
 
     private fun setupInitialTransition() {
