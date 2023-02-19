@@ -1,0 +1,62 @@
+
+../spritesheet/menu.png
+size: 512, 512
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+white-pixel
+  rotate: false
+  xy: 508, 506
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+abaddon-bold-21-white
+  rotate: false
+  xy: 1, 370
+  size: 502, 42
+  orig: 502, 42
+  offset: 0, 0
+  index: -1
+abaddon-bold-36-white
+  rotate: false
+  xy: 1, 414
+  size: 505, 93
+  orig: 505, 93
+  offset: 0, 0
+  index: -1
+breakout-logo
+  rotate: false
+  xy: 1, 312
+  size: 288, 56
+  orig: 288, 56
+  offset: 0, 0
+  index: -1
+button-focus
+  rotate: false
+  xy: 1, 282
+  size: 40, 28
+  orig: 40, 28
+  offset: 0, 0
+  index: -1
+button-press
+  rotate: false
+  xy: 291, 340
+  size: 40, 28
+  orig: 40, 28
+  offset: 0, 0
+  index: -1
+horizontal-progress-bar-knob
+  rotate: false
+  xy: 43, 282
+  size: 28, 28
+  orig: 28, 28
+  offset: 0, 0
+  index: -1
+progress-bar
+  rotate: false
+  xy: 1, 244
+  size: 36, 36
+  orig: 36, 36
+  offset: 0, 0
+  index: -1

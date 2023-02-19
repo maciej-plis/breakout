@@ -1,0 +1,171 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	abaddon-bold-21-white: {
+		file: ../font/abaddon-bold-21-white.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+	abaddon-bold-36-white: {
+		file: ../font/abaddon-bold-36-white.fnt,
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	BLACK: {
+		r: 0
+		g: 0
+		b: 0
+		a: 1
+	}
+	BLUEISH: {
+		r: 0.40784314
+		g: 0.40784314
+		b: 0.5294118
+		a: 1
+	}
+	DARKISH: {
+		r: 0.13333334
+		g: 0.1254902
+		b: 0.20392157
+		a: 1
+	}
+	PURPLE: {
+		r: 0.4627451
+		g: 0.25882354
+		b: 0.5411765
+		a: 1
+	}
+	WHITE: {
+		r: 1
+		g: 1
+		b: 1
+		a: 1
+	},
+	TRANSPARENT: {
+		r: 1
+		g: 1
+		b: 1
+		a: 0
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+	white-pixel: {
+		name: white-pixel
+		color: WHITE
+	}
+}
+com.ray3k.tenpatch.TenPatchDrawable: {
+	button-focus-patch: {
+		region: button-focus
+		horizontalStretchAreas: [ 16, 23 ]
+		verticalStretchAreas: [ 12, 15 ]
+		tiling: false
+		minWidth: 40
+		minHeight: 28
+		rightWidth: 19
+		leftWidth: 19
+		bottomHeight: 0
+		topHeight: 0
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	button-press-patch: {
+		region: button-press
+		horizontalStretchAreas: [ 16, 23 ]
+		verticalStretchAreas: [ 12, 15 ]
+		tiling: false
+		minWidth: 40
+		minHeight: 28
+		rightWidth: 19
+		leftWidth: 19
+		bottomHeight: 0
+		topHeight: 0
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	progress-bar-patch: {
+		region: progress-bar
+		horizontalStretchAreas: [ 8, 27 ]
+		verticalStretchAreas: [ 8, 27 ]
+		tiling: false
+		minWidth: 36
+		minHeight: 36
+		rightWidth: 0
+		leftWidth: 4
+		bottomHeight: 0
+		topHeight: 0
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	horizontal-progress-bar-knob-patch: {
+		region: horizontal-progress-bar-knob
+		horizontalStretchAreas: [ 4, 19 ]
+		verticalStretchAreas: [ 4, 23 ]
+		tiling: false
+		minWidth: 28
+		minHeight: 28
+		rightWidth: 0
+		leftWidth: 0
+		bottomHeight: 0
+		topHeight: 0
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 2
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: abaddon-bold-21-white
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
+	default-horizontal: {
+		background: progress-bar-patch
+		knobBefore: horizontal-progress-bar-knob-patch
+	}
+	default-vertical: {
+		background: progress-bar-patch
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: abaddon-bold-36-white
+		fontColor: DARKISH
+		downFontColor: BLACK
+		overFontColor: BLACK
+		down: button-press-patch
+		over: button-focus-patch
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+	}
+}
+}
