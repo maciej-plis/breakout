@@ -31,6 +31,7 @@ class BreakoutGame : KtxGame<KtxScreen>(clearScreen = false) {
 
     override fun dispose() {
         LOG.info { "Disposing ${javaClass.simpleName}" }
+        super.dispose()
         assets.dispose()
         batch.dispose()
     }

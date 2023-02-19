@@ -808,13 +808,13 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.Color
 						name: overFontColor
 						optional: true
-						value: BLACK
+						value: null
 					}
 					focusedFontColor: {
 						type: com.badlogic.gdx.graphics.Color
 						name: focusedFontColor
 						optional: true
-						value: null
+						value: BLACK
 					}
 					disabledFontColor: {
 						type: com.badlogic.gdx.graphics.Color
@@ -862,13 +862,13 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: over
 						optional: true
-						value: button-focus-patch
+						value: null
 					}
 					focused: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: focused
 						optional: true
-						value: null
+						value: button-press-patch
 					}
 					disabled: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -2145,13 +2145,13 @@ sceneComposer: {
 									type: com.badlogic.gdx.graphics.Color
 									name: overFontColor
 									optional: true
-									value: BLACK
+									value: null
 								}
 								focusedFontColor: {
 									type: com.badlogic.gdx.graphics.Color
 									name: focusedFontColor
 									optional: true
-									value: null
+									value: BLACK
 								}
 								disabledFontColor: {
 									type: com.badlogic.gdx.graphics.Color
@@ -2199,13 +2199,13 @@ sceneComposer: {
 									type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 									name: over
 									optional: true
-									value: button-focus-patch
+									value: null
 								}
 								focused: {
 									type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 									name: focused
 									optional: true
-									value: null
+									value: button-press-patch
 								}
 								disabled: {
 									type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -2345,13 +2345,13 @@ sceneComposer: {
 									type: com.badlogic.gdx.graphics.Color
 									name: overFontColor
 									optional: true
-									value: BLACK
+									value: null
 								}
 								focusedFontColor: {
 									type: com.badlogic.gdx.graphics.Color
 									name: focusedFontColor
 									optional: true
-									value: null
+									value: BLACK
 								}
 								disabledFontColor: {
 									type: com.badlogic.gdx.graphics.Color
@@ -2399,13 +2399,13 @@ sceneComposer: {
 									type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 									name: over
 									optional: true
-									value: button-focus-patch
+									value: null
 								}
 								focused: {
 									type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 									name: focused
 									optional: true
-									value: null
+									value: button-press-patch
 								}
 								disabled: {
 									type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -2545,13 +2545,13 @@ sceneComposer: {
 									type: com.badlogic.gdx.graphics.Color
 									name: overFontColor
 									optional: true
-									value: BLACK
+									value: null
 								}
 								focusedFontColor: {
 									type: com.badlogic.gdx.graphics.Color
 									name: focusedFontColor
 									optional: true
-									value: null
+									value: BLACK
 								}
 								disabledFontColor: {
 									type: com.badlogic.gdx.graphics.Color
@@ -2599,13 +2599,13 @@ sceneComposer: {
 									type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 									name: over
 									optional: true
-									value: button-focus-patch
+									value: null
 								}
 								focused: {
 									type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 									name: focused
 									optional: true
-									value: null
+									value: button-press-patch
 								}
 								disabled: {
 									type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -2745,13 +2745,13 @@ sceneComposer: {
 									type: com.badlogic.gdx.graphics.Color
 									name: overFontColor
 									optional: true
-									value: BLACK
+									value: null
 								}
 								focusedFontColor: {
 									type: com.badlogic.gdx.graphics.Color
 									name: focusedFontColor
 									optional: true
-									value: null
+									value: BLACK
 								}
 								disabledFontColor: {
 									type: com.badlogic.gdx.graphics.Color
@@ -2799,13 +2799,13 @@ sceneComposer: {
 									type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 									name: over
 									optional: true
-									value: button-focus-patch
+									value: null
 								}
 								focused: {
 									type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 									name: focused
 									optional: true
-									value: null
+									value: button-press-patch
 								}
 								disabled: {
 									type: com.badlogic.gdx.scenes.scene2d.utils.Drawable

@@ -158,9 +158,9 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		font: abaddon-bold-36-white
 		fontColor: DARKISH
 		downFontColor: BLACK
-		overFontColor: BLACK
+		focusedFontColor: BLACK
 		down: button-press-patch
-		over: button-focus-patch
+		focused: button-focus-patch
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
