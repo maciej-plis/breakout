@@ -2,15 +2,15 @@ package com.matthias.breakout
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.matthias.breakout.common.setScreen
 import com.ray3k.stripe.scenecomposer.SceneComposerStageBuilder
 import ktx.app.KtxGame
 import ktx.app.KtxScreen
 import ktx.assets.async.AssetStorage
 import ktx.async.KtxAsync
-import ktx.graphics.color
 import ktx.log.logger
 
-private val logger = logger<BreakoutGame>()
+private val LOG = logger<BreakoutGame>()
 
 class BreakoutGame : KtxGame<KtxScreen>(clearScreen = false) {
 
@@ -25,13 +25,13 @@ class BreakoutGame : KtxGame<KtxScreen>(clearScreen = false) {
     }
 
     override fun create() {
-        logger.info { "Initializing game" }
-
-        addScreen(LoadingScreen(this))
-        setScreen<LoadingScreen>()
+        LOG.info { "Creating ${javaClass.simpleName}" }
+        setScreen(LoadingScreen(this))
     }
 
     override fun dispose() {
+        LOG.info { "Disposing ${javaClass.simpleName}" }
+        assets.dispose()
         batch.dispose()
     }
 }

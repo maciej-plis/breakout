@@ -36,6 +36,8 @@ class LoadingScreen(
             assets.loadAsync(LOADING_SCREEN_ASSETS).joinAll()
             setupLoadingScreenStage()
             assets.loadAsync(REQUIRED_GAME_ASSETS).joinAll()
+            LOG.info { "Assets loaded successfully: ${assets.progress.loaded}" }
+            LOG.info { "Assets loaded unsuccessfully: ${assets.progress.failed}" }
             proceedToMenuScreen()
         }
     }
