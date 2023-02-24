@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.matthias.breakout.assets.SkinAsset.MENU_SKIN
+import com.matthias.breakout.common.setScreen
 import ktx.actors.onKeyDown
 import ktx.actors.onKeyUp
 import ktx.app.KtxScreen
@@ -81,7 +82,14 @@ class MenuScreen(
             }
         })
 
-        quitBtn.addListener(object : ClickListener() {
+        playBtn?.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                proceedToGameScreen()
+                return super.clicked(event, x, y)
+            }
+        })
+
+        quitBtn?.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 Gdx.app.exit()
                 return super.clicked(event, x, y)
@@ -98,7 +106,6 @@ class MenuScreen(
             button?.onKeyDown { keyCode ->
                 if (keyCode == ENTER) {
                     stage.keyboardFocus?.fire(InputEvent().apply { type = touchDown })
-                    runOption()
                 }
             }
             button?.onKeyUp { keyCode ->
@@ -124,12 +131,6 @@ class MenuScreen(
         stage.keyboardFocus = buttons[min(index + 1, buttons.lastIndex)]
     }
 
-    private fun runOption() {
-        when (stage.keyboardFocus.name) {
-            "quit-button" -> Gdx.app.exit()
-        }
-    }
-
     private fun setupInitialTransition() {
         val progressBarContainer = stage.root.findActor<Table>("progress-bar-container-before").apply { localToStageCoordinates(Vector2(0f, 0f)) }
         val targetPos = stage.root.findActor<Table>("progress-bar-container-after")?.localToStageCoordinates(Vector2(0f, 0f))
@@ -150,6 +151,11 @@ class MenuScreen(
                 Actions.run { progressBarContainer.isVisible = false }
             ))
         }
+    }
+
+    private fun proceedToGameScreen() {
+        stage.root.isVisible = false
+        game.setScreen(GameScreen(game))
     }
 }
 
