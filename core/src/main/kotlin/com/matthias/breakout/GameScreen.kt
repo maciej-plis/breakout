@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.*
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
+import com.matthias.breakout.common.toMeters
 import com.matthias.breakout.ecs.component.BodyComponent
 import com.matthias.breakout.ecs.component.TransformComponent
 import com.matthias.breakout.ecs.system.PhysicsDebugRenderingSystem
@@ -50,7 +51,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
         createPaddle()
         createBall()
 
-        camera.position.set(0f, 0f, 0f)
+        camera.position.set((camera.viewportWidth / 2f), (camera.viewportHeight / 2f), 0f)
         Gdx.input.inputProcessor = InputMultiplexer(TestInputProcessor(paddle, camera))
     }
 
@@ -60,21 +61,21 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
         game.gameViewport.apply()
         engine.update(delta)
 
-        if (ball.position.y < paddle.position.y - .5f / PPM) {
-            ball.setTransform(0f, 0f, 0f)
-            ball.setLinearVelocity(0f, -16f / PPM)
+        if (ball.position.y < paddle.position.y - .5f.toMeters()) {
+            ball.setTransform(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f)
+            ball.setLinearVelocity(0f, (-16f).toMeters())
         }
 
         if (paddle.userData == LEFT) {
-            paddle.setTransform(paddle.position.x - 0.5f / PPM, paddle.position.y, 0f)
+            paddle.setTransform(paddle.position.x - 0.5f.toMeters(), paddle.position.y, 0f)
         } else if (paddle.userData == RIGHT) {
-            paddle.setTransform(paddle.position.x + 0.5f / PPM, paddle.position.y, 0f)
+            paddle.setTransform(paddle.position.x + 0.5f.toMeters(), paddle.position.y, 0f)
         }
 
-        if (paddle.position.x - 3f / PPM <= -15.5f / PPM) {
-            paddle.setTransform(-12.5f / PPM, paddle.position.y, 0f)
-        } else if (paddle.position.x + 3f / PPM >= 15.5f / PPM) {
-            paddle.setTransform(12.5f / PPM, paddle.position.y, 0f)
+        if (paddle.position.x - 5f.toMeters() <= 1f.toMeters()) {
+            paddle.setTransform(6f.toMeters(), paddle.position.y, 0f)
+        } else if (paddle.position.x + 5f.toMeters() >= camera.viewportWidth - 1f.toMeters()) {
+            paddle.setTransform(camera.viewportWidth - 6f.toMeters(), paddle.position.y, 0f)
         }
     }
 
@@ -90,13 +91,13 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
     private fun createCeiling() {
         engine.entity {
             with<TransformComponent> {
-                setInitialPosition(0f, 16f, 1f)
-                size.set(32f, 1f)
+                setInitialPosition(camera.viewportWidth / 2, camera.viewportHeight - 0.5f.toMeters(), 1f)
+                size.set(camera.viewportWidth, 1f.toMeters())
             }
             entity += BodyComponent(
                 world.body {
-                    position.set(0f / PPM, 16f / PPM)
-                    box(32f / PPM, 1f / PPM) {
+                    position.set(camera.viewportWidth / 2, camera.viewportHeight - 0.5f.toMeters())
+                    box(camera.viewportWidth, 1f.toMeters()) {
                         filter.categoryBits = 4
                     }
                 }
@@ -107,13 +108,13 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
     private fun createLeftWall() {
         engine.entity {
             with<TransformComponent> {
-                setInitialPosition(-16f, 0f, 1f)
-                size.set(1f, 32f)
+                setInitialPosition(0.5f.toMeters(), camera.viewportHeight / 2, 1f)
+                size.set(1f.toMeters(), camera.viewportHeight)
             }
             entity += BodyComponent(
                 world.body {
-                    position.set(-16f / PPM, 0f / PPM)
-                    box(1f / PPM, 32f / PPM) {
+                    position.set(0.5f.toMeters(), camera.viewportHeight / 2)
+                    box(1f.toMeters(), camera.viewportHeight) {
                         filter.categoryBits = 8
                     }
                 }
@@ -124,13 +125,13 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
     private fun createRightWall() {
         engine.entity {
             with<TransformComponent> {
-                setInitialPosition(16f, 0f, 1f)
-                size.set(1f, 32f)
+                setInitialPosition(camera.viewportWidth - 0.5f.toMeters(), camera.viewportHeight / 2, 1f)
+                size.set(1f.toMeters(), camera.viewportHeight)
             }
             entity += BodyComponent(
                 world.body {
-                    position.set(16f / PPM, 0f / PPM)
-                    box(1f / PPM, 32f / PPM) {
+                    position.set(camera.viewportWidth - 0.5f.toMeters(), camera.viewportHeight / 2)
+                    box(1f.toMeters(), camera.viewportHeight) {
                         filter.categoryBits = 8
                     }
                 }
@@ -141,13 +142,13 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
     private fun createPaddle() {
         engine.entity {
             with<TransformComponent> {
-                setInitialPosition(0f, -14f, 1f)
-                size.set(6f, 1f)
+                setInitialPosition(camera.viewportWidth / 2, 1.5f.toMeters(), 1f)
+                size.set(10f.toMeters(), 1f)
             }
             entity += BodyComponent(
                 world.body {
-                    position.set(0f, -14f / PPM)
-                    box(width = 6f / PPM, height = 1f / PPM) {
+                    position.set(camera.viewportWidth / 2, 1.5f.toMeters())
+                    box(width = 10f.toMeters(), height = 1f.toMeters()) {
                         filter.categoryBits = 2
                     }
                 }.also { paddle = it }
@@ -158,12 +159,12 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
     private fun createBall() {
         engine.entity {
             with<TransformComponent> {
-                setInitialPosition(0f, 0f, 1f)
+                setInitialPosition(camera.viewportWidth / 2, camera.viewportHeight / 2, 1f)
                 size.set(1f, 1f)
             }
             entity += BodyComponent(
                 world.body(type = DynamicBody) {
-                    position.set(0f, 0f)
+                    position.set(camera.viewportWidth / 2, camera.viewportHeight / 2)
                     circle(0.5f / PPM) {
                         filter.categoryBits = 1
                         userData = -90f * degreesToRadians
@@ -174,7 +175,6 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
             )
         }
     }
-
 }
 
 class TestInputProcessor(val paddle: Body, val camera: Camera) : InputProcessor {
@@ -213,7 +213,7 @@ class TestContactListener : ContactListener {
             val cp = contact.worldManifold.points[0]
             val point = contact.fixtureB.body.getLocalPoint(cp)
 
-            val x = (point.x * PPM) / 3
+            val x = (point.x * PPM) / 5
 
             val angle = ((60 * x) + 90) * degreesToRadians
             contact.fixtureA.userData = angle
@@ -223,7 +223,7 @@ class TestContactListener : ContactListener {
             val cp = contact.worldManifold.points[0]
             val point = contact.fixtureA.body.getLocalPoint(cp)
 
-            val x = (point.x * PPM) / 3
+            val x = (point.x * PPM) / 5
 
             val angle = ((-60 * x) + 90) * degreesToRadians
             contact.fixtureB.userData = angle
