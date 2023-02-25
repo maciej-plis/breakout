@@ -14,7 +14,8 @@ import com.badlogic.gdx.physics.box2d.*
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
 import com.matthias.breakout.ecs.component.BodyComponent
 import com.matthias.breakout.ecs.component.TransformComponent
-import com.matthias.breakout.ecs.system.WorldDebugRenderingSystem
+import com.matthias.breakout.ecs.system.PhysicsDebugRenderingSystem
+import com.matthias.breakout.ecs.system.PhysicsSystem
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
 import ktx.ashley.entity
@@ -34,7 +35,8 @@ class GameScreen(val game: BreakoutGame) : KtxScreen {
     }
 
     val engine = PooledEngine().apply {
-        this.addSystem(WorldDebugRenderingSystem(world, game.gameViewport.camera))
+        addSystem(PhysicsSystem(world))
+        addSystem(PhysicsDebugRenderingSystem(world, game.gameViewport.camera))
     }
 
     private lateinit var ball: Body
@@ -56,7 +58,6 @@ class GameScreen(val game: BreakoutGame) : KtxScreen {
     override fun render(delta: Float) {
         clearScreen(.40784314f, .40784314f, .5294118f)
 
-        world.step(delta, 6, 2)
         engine.update(delta)
 
         if (ball.position.y < paddle.position.y - .5f / PPM) {

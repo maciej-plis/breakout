@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.physics.box2d.World
 
-class WorldDebugRenderingSystem(private val world: World, private val camera: Camera) : EntitySystem() {
+class PhysicsDebugRenderingSystem(private val world: World, private val camera: Camera) : EntitySystem() {
 
     private val box2DDebugRenderer = Box2DDebugRenderer()
 

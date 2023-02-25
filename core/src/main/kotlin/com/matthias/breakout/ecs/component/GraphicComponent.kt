@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Component
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.matthias.breakout.common.toMeters
+import ktx.ashley.mapperFor
 
 class GraphicComponent : Component {
 
@@ -15,5 +16,9 @@ class GraphicComponent : Component {
             setSize(texture.width.toMeters(), texture.height.toMeters())
             setOriginCenter()
         }
+    }
+
+    companion object {
+        val mapper = mapperFor<GraphicComponent>()
     }
 }
