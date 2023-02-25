@@ -158,9 +158,3 @@ class MenuScreen(
         game.setScreen(GameScreen(game))
     }
 }
-
-class DebugTestListener(private val text: String) : ClickListener() {
-    override fun clicked(event: InputEvent?, x: Float, y: Float) {
-        println(text)
-    }
-}
