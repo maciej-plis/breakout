@@ -3,11 +3,11 @@ package com.matthias.breakout.ecs.component
 import com.badlogic.ashley.core.Component
 import ktx.ashley.mapperFor
 
-class PaddleComponent : Component {
+class RemoveComponent : Component {
 
-    var speed: Float = 0.0f
+    var delay: Float = 0f
 
     companion object {
-        val mapper = mapperFor<PaddleComponent>()
+        val mapper = mapperFor<RemoveComponent>()
     }
 }

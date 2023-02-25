@@ -13,7 +13,7 @@ import ktx.ashley.get
 
 class PaddleMovementSystem : IteratingSystem(allOf(PaddleComponent::class, BodyComponent::class).get()) {
 
-    override fun processEntity(entity: Entity, deltaTime: Float) {
+    override fun processEntity(entity: Entity, delta: Float) {
         val paddleC = entity[PaddleComponent.mapper]!!
         val bodyC = entity[BodyComponent.mapper]!!
 

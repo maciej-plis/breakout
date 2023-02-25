@@ -11,13 +11,15 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.*
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
 import com.matthias.breakout.common.toMeters
+import com.matthias.breakout.ecs.component.BallComponent
 import com.matthias.breakout.ecs.component.BodyComponent
 import com.matthias.breakout.ecs.component.PaddleComponent
 import com.matthias.breakout.ecs.component.TransformComponent
-import com.matthias.breakout.ecs.system.PaddleBoundarySystem
-import com.matthias.breakout.ecs.system.PaddleMovementSystem
-import com.matthias.breakout.ecs.system.PhysicsDebugRenderingSystem
-import com.matthias.breakout.ecs.system.PhysicsSystem
+import com.matthias.breakout.ecs.system.*
+import com.matthias.breakout.event.GameEvent
+import com.matthias.breakout.event.GameEvent.GameOverEvent
+import com.matthias.breakout.event.GameEventListener
+import com.matthias.breakout.event.GameEventManager
 import ktx.app.clearScreen
 import ktx.ashley.entity
 import ktx.ashley.plusAssign
@@ -29,11 +31,17 @@ import ktx.log.logger
 
 private val LOG = logger<GameScreen>()
 
-class GameScreen(game: BreakoutGame) : ScreenBase(game) {
+class GameScreen(game: BreakoutGame) : ScreenBase(game), GameEventListener {
 
     val world by lazy {
         World(Vector2(0f, 0f), true).apply {
             setContactListener(TestContactListener())
+        }
+    }
+
+    val eventManager by lazy {
+        GameEventManager().apply {
+            addListener(GameOverEvent::class, this@GameScreen)
         }
     }
 
@@ -42,6 +50,8 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
             addSystem(PhysicsSystem(world))
             addSystem(PaddleMovementSystem())
             addSystem(PaddleBoundarySystem(1f.toMeters(), camera.viewportWidth - 1f.toMeters()))
+            addSystem(GameOverSystem(eventManager, 0f))
+            addSystem(RemoveSystem(world))
             addSystem(PhysicsDebugRenderingSystem(world, camera))
         }
     }
@@ -67,11 +77,6 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
 
         game.gameViewport.apply()
         engine.update(delta)
-
-        if (ball.position.y < paddle.position.y - .5f.toMeters()) {
-            ball.setTransform(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f)
-            ball.setLinearVelocity(0f, (-16f).toMeters())
-        }
     }
 
     override fun resize(width: Int, height: Int) {
@@ -81,6 +86,12 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
     override fun dispose() {
         LOG.info { "Disposing ${javaClass.simpleName}" }
         world.dispose()
+    }
+
+    override fun onEvent(event: GameEvent) {
+        if (event is GameOverEvent) {
+            createBall()
+        }
     }
 
     private fun createCeiling() {
@@ -156,6 +167,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
 
     private fun createBall() {
         engine.entity {
+            with<BallComponent>()
             with<TransformComponent> {
                 setInitialPosition(camera.viewportWidth / 2, camera.viewportHeight / 2, 1f)
                 size.set(1f, 1f)
