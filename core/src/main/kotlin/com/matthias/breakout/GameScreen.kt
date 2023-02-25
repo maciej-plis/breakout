@@ -2,8 +2,6 @@ package com.matthias.breakout
 
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input.Keys.LEFT
-import com.badlogic.gdx.Input.Keys.RIGHT
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.graphics.Camera
@@ -17,6 +15,7 @@ import com.matthias.breakout.ecs.component.BodyComponent
 import com.matthias.breakout.ecs.component.PaddleComponent
 import com.matthias.breakout.ecs.component.TransformComponent
 import com.matthias.breakout.ecs.system.PaddleBoundarySystem
+import com.matthias.breakout.ecs.system.PaddleMovementSystem
 import com.matthias.breakout.ecs.system.PhysicsDebugRenderingSystem
 import com.matthias.breakout.ecs.system.PhysicsSystem
 import ktx.app.clearScreen
@@ -41,6 +40,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
     val engine by lazy {
         PooledEngine().apply {
             addSystem(PhysicsSystem(world))
+            addSystem(PaddleMovementSystem())
             addSystem(PaddleBoundarySystem(1f.toMeters(), camera.viewportWidth - 1f.toMeters()))
             addSystem(PhysicsDebugRenderingSystem(world, camera))
         }
@@ -71,12 +71,6 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
         if (ball.position.y < paddle.position.y - .5f.toMeters()) {
             ball.setTransform(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f)
             ball.setLinearVelocity(0f, (-16f).toMeters())
-        }
-
-        if (paddle.userData == LEFT) {
-            paddle.setTransform(paddle.position.x - 0.5f.toMeters(), paddle.position.y, 0f)
-        } else if (paddle.userData == RIGHT) {
-            paddle.setTransform(paddle.position.x + 0.5f.toMeters(), paddle.position.y, 0f)
         }
     }
 
@@ -142,7 +136,9 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
 
     private fun createPaddle() {
         engine.entity {
-            with<PaddleComponent>()
+            with<PaddleComponent>() {
+                speed = 0.5f.toMeters()
+            }
             with<TransformComponent> {
                 setInitialPosition(camera.viewportWidth / 2, 1.5f.toMeters(), 1f)
                 size.set(10f.toMeters(), 1f)

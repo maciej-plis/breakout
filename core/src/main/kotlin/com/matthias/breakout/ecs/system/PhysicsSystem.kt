@@ -19,7 +19,7 @@ class PhysicsSystem(private val world: World) : IteratingSystem(allOf(BodyCompon
         val transformC = entity[TransformComponent.mapper]!!
         val bodyC = entity[BodyComponent.mapper]!!
 
-        transformC.position.set(bodyC.body.position, transformC.position.z)
+        transformC.position.set(bodyC.body.position, transformC.position.z) // TODO Should be separate system?
     }
 
     companion object {

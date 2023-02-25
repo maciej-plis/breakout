@@ -14,7 +14,7 @@ import ktx.ashley.get
 class PaddleBoundarySystem(
     private val leftBoundary: Float,
     private val rightBoundary: Float
-) : IteratingSystem(allOf(PaddleComponent::class, BodyComponent::class).get()) {
+) : IteratingSystem(allOf(PaddleComponent::class, TransformComponent::class, BodyComponent::class).get()) {
 
     override fun processEntity(entity: Entity, delta: Float) {
         val bodyC = entity[BodyComponent.mapper]!!
