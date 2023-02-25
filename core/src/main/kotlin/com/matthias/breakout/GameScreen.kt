@@ -14,7 +14,9 @@ import com.badlogic.gdx.physics.box2d.*
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
 import com.matthias.breakout.common.toMeters
 import com.matthias.breakout.ecs.component.BodyComponent
+import com.matthias.breakout.ecs.component.PaddleComponent
 import com.matthias.breakout.ecs.component.TransformComponent
+import com.matthias.breakout.ecs.system.PaddleBoundarySystem
 import com.matthias.breakout.ecs.system.PhysicsDebugRenderingSystem
 import com.matthias.breakout.ecs.system.PhysicsSystem
 import ktx.app.clearScreen
@@ -30,13 +32,18 @@ private val LOG = logger<GameScreen>()
 
 class GameScreen(game: BreakoutGame) : ScreenBase(game) {
 
-    val world = World(Vector2(0f, 0f), true).apply {
-        setContactListener(TestContactListener())
+    val world by lazy {
+        World(Vector2(0f, 0f), true).apply {
+            setContactListener(TestContactListener())
+        }
     }
 
-    val engine = PooledEngine().apply {
-        addSystem(PhysicsSystem(world))
-        addSystem(PhysicsDebugRenderingSystem(world, camera))
+    val engine by lazy {
+        PooledEngine().apply {
+            addSystem(PhysicsSystem(world))
+            addSystem(PaddleBoundarySystem(1f.toMeters(), camera.viewportWidth - 1f.toMeters()))
+            addSystem(PhysicsDebugRenderingSystem(world, camera))
+        }
     }
 
     private lateinit var ball: Body
@@ -70,12 +77,6 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
             paddle.setTransform(paddle.position.x - 0.5f.toMeters(), paddle.position.y, 0f)
         } else if (paddle.userData == RIGHT) {
             paddle.setTransform(paddle.position.x + 0.5f.toMeters(), paddle.position.y, 0f)
-        }
-
-        if (paddle.position.x - 5f.toMeters() <= 1f.toMeters()) {
-            paddle.setTransform(6f.toMeters(), paddle.position.y, 0f)
-        } else if (paddle.position.x + 5f.toMeters() >= camera.viewportWidth - 1f.toMeters()) {
-            paddle.setTransform(camera.viewportWidth - 6f.toMeters(), paddle.position.y, 0f)
         }
     }
 
@@ -141,6 +142,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
 
     private fun createPaddle() {
         engine.entity {
+            with<PaddleComponent>()
             with<TransformComponent> {
                 setInitialPosition(camera.viewportWidth / 2, 1.5f.toMeters(), 1f)
                 size.set(10f.toMeters(), 1f)
