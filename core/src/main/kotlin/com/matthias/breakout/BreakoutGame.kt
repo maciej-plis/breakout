@@ -1,9 +1,11 @@
 package com.matthias.breakout
 
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.matthias.breakout.common.setScreen
+import com.matthias.breakout.common.toMeters
 import com.ray3k.stripe.scenecomposer.SceneComposerStageBuilder
 import ktx.app.KtxGame
 import ktx.app.KtxScreen
@@ -13,8 +15,8 @@ import ktx.log.logger
 
 private val LOG = logger<BreakoutGame>()
 
-private const val V_WIDTH = 512f
-private const val V_HEIGHT = 288f
+private const val V_WIDTH = 18f
+private const val V_HEIGHT = 32f
 const val PPM = 16f
 
 class BreakoutGame : KtxGame<KtxScreen>(clearScreen = false) {
@@ -23,8 +25,10 @@ class BreakoutGame : KtxGame<KtxScreen>(clearScreen = false) {
 
     val stageBuilder = SceneComposerStageBuilder()
 
-    val uiViewport = ScreenViewport()
-    val gameViewport = ExtendViewport(V_WIDTH / PPM, V_HEIGHT / PPM)
+    val camera = OrthographicCamera()
+
+    val uiViewport = ScreenViewport(camera)
+    val gameViewport = ExtendViewport(V_WIDTH.toMeters(), V_HEIGHT.toMeters(), camera)
 
     val batch by lazy { SpriteBatch() }
 

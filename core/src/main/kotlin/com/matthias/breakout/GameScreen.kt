@@ -16,7 +16,6 @@ import com.matthias.breakout.ecs.component.BodyComponent
 import com.matthias.breakout.ecs.component.TransformComponent
 import com.matthias.breakout.ecs.system.PhysicsDebugRenderingSystem
 import com.matthias.breakout.ecs.system.PhysicsSystem
-import ktx.app.KtxScreen
 import ktx.app.clearScreen
 import ktx.ashley.entity
 import ktx.ashley.plusAssign
@@ -28,7 +27,7 @@ import ktx.log.logger
 
 private val LOG = logger<GameScreen>()
 
-class GameScreen(val game: BreakoutGame) : KtxScreen {
+class GameScreen(game: BreakoutGame) : ScreenBase(game) {
 
     val world = World(Vector2(0f, 0f), true).apply {
         setContactListener(TestContactListener())
@@ -36,7 +35,7 @@ class GameScreen(val game: BreakoutGame) : KtxScreen {
 
     val engine = PooledEngine().apply {
         addSystem(PhysicsSystem(world))
-        addSystem(PhysicsDebugRenderingSystem(world, game.gameViewport.camera))
+        addSystem(PhysicsDebugRenderingSystem(world, camera))
     }
 
     private lateinit var ball: Body
@@ -51,13 +50,14 @@ class GameScreen(val game: BreakoutGame) : KtxScreen {
         createPaddle()
         createBall()
 
-        game.gameViewport.camera.position.set(0f, 0f, 0f)
-        Gdx.input.inputProcessor = InputMultiplexer(TestInputProcessor(paddle, game.gameViewport.camera))
+        camera.position.set(0f, 0f, 0f)
+        Gdx.input.inputProcessor = InputMultiplexer(TestInputProcessor(paddle, camera))
     }
 
     override fun render(delta: Float) {
         clearScreen(.40784314f, .40784314f, .5294118f)
 
+        game.gameViewport.apply()
         engine.update(delta)
 
         if (ball.position.y < paddle.position.y - .5f / PPM) {
@@ -76,8 +76,10 @@ class GameScreen(val game: BreakoutGame) : KtxScreen {
         } else if (paddle.position.x + 3f / PPM >= 15.5f / PPM) {
             paddle.setTransform(12.5f / PPM, paddle.position.y, 0f)
         }
+    }
 
-//        game.gameViewport.apply()
+    override fun resize(width: Int, height: Int) {
+        game.gameViewport.update(width, height)
     }
 
     override fun dispose() {
