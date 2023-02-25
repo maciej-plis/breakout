@@ -1,13 +1,8 @@
 package com.matthias.breakout
 
 import com.badlogic.ashley.core.PooledEngine
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.InputMultiplexer
-import com.badlogic.gdx.InputProcessor
-import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.math.MathUtils.*
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.*
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
 import com.matthias.breakout.common.toMeters
@@ -33,22 +28,23 @@ private val LOG = logger<GameScreen>()
 
 class GameScreen(game: BreakoutGame) : ScreenBase(game), GameEventListener {
 
-    val world by lazy {
+    private val world by lazy {
         World(Vector2(0f, 0f), true).apply {
             setContactListener(TestContactListener())
         }
     }
 
-    val eventManager by lazy {
+    private val eventManager by lazy {
         GameEventManager().apply {
             addListener(GameOverEvent::class, this@GameScreen)
         }
     }
 
-    val engine by lazy {
+    private val engine by lazy {
         PooledEngine().apply {
             addSystem(PhysicsSystem(world))
-            addSystem(PaddleMovementSystem())
+            addSystem(PaddleKeyboardMovementSystem())
+            addSystem(PaddleMouseMovementSystem(camera))
             addSystem(PaddleBoundarySystem(1f.toMeters(), camera.viewportWidth - 1f.toMeters()))
             addSystem(GameOverSystem(eventManager, 0f))
             addSystem(RemoveSystem(world))
@@ -69,7 +65,6 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game), GameEventListener {
         createBall()
 
         camera.position.set((camera.viewportWidth / 2f), (camera.viewportHeight / 2f), 0f)
-        Gdx.input.inputProcessor = InputMultiplexer(TestInputProcessor(paddle, camera))
     }
 
     override fun render(delta: Float) {
@@ -185,35 +180,6 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game), GameEventListener {
             )
         }
     }
-}
-
-class TestInputProcessor(val paddle: Body, val camera: Camera) : InputProcessor {
-    override fun keyDown(keycode: Int): Boolean {
-        paddle.userData = keycode
-        return true;
-    }
-
-    override fun keyUp(keycode: Int): Boolean {
-        if (paddle.userData == keycode) paddle.userData = null
-        return true;
-    }
-
-    override fun keyTyped(character: Char) = TODO()
-
-    override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int) = TODO()
-
-    override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int) = TODO()
-
-    override fun touchDragged(screenX: Int, screenY: Int, pointer: Int) = TODO()
-
-    override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
-        val coords = camera.unproject(Vector3(screenX.toFloat(), screenY.toFloat(), 0f))
-        paddle.setTransform(coords.x, paddle.position.y, 0f)
-        return true;
-    }
-
-    override fun scrolled(amountX: Float, amountY: Float) = TODO()
-
 }
 
 class TestContactListener : ContactListener {
