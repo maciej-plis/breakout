@@ -5,7 +5,7 @@ import ktx.ashley.mapperFor
 
 class BallComponent : Component {
 
-    var speed: Float = 0.0f
+    var velocity: Float = 0.0f
 
     companion object {
         val mapper = mapperFor<BallComponent>()
