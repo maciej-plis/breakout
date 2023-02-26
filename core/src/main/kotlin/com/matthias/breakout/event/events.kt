@@ -1,6 +1,9 @@
 package com.matthias.breakout.event
 
+import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.math.Vector2
+
+private val emptyEntity = Entity()
 
 sealed interface GameEvent {
 
@@ -14,6 +17,13 @@ sealed interface GameEvent {
     }
 
     object BallWallHit : GameEvent {
+        val contactNormal = Vector2(0f, 0f)
+        var ballContactVelocity = Vector2(0f, 0f)
+        override fun toString() = "${javaClass.simpleName}()"
+    }
+
+    object BallBlockHit : GameEvent {
+        var blockEntity: Entity = emptyEntity
         val contactNormal = Vector2(0f, 0f)
         var ballContactVelocity = Vector2(0f, 0f)
         override fun toString() = "${javaClass.simpleName}()"

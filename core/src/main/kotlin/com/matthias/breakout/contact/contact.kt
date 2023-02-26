@@ -1,18 +1,19 @@
 package com.matthias.breakout.contact
 
+import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.ContactListener
 import com.badlogic.gdx.physics.box2d.Manifold
 import com.matthias.breakout.event.GameEvent
-import com.matthias.breakout.event.GameEvent.BallPaddleHit
-import com.matthias.breakout.event.GameEvent.BallWallHit
+import com.matthias.breakout.event.GameEvent.*
 import com.matthias.breakout.event.GameEventManager
 import kotlin.experimental.or
 
 const val BALL_BIT: Short = 1
 const val PADDLE_BIT: Short = 2
 const val WALL_BIT: Short = 4
+const val BLOCK_BIT: Short = 8
 
 class GameContactListener(private val eventManager: GameEventManager<GameEvent>) : ContactListener {
 
@@ -30,14 +31,22 @@ class GameContactListener(private val eventManager: GameEventManager<GameEvent>)
                     ballContactVelocity.set(getBody(contact, BALL_BIT).linearVelocity)
                 }
             )
+
+            BALL_BIT or BLOCK_BIT -> eventManager.addEvent(
+                BallBlockHit.apply {
+                    blockEntity = getBody(contact, BLOCK_BIT).userData as Entity
+                    contactNormal.set(contact.worldManifold.normal)
+                    ballContactVelocity.set(getBody(contact, BALL_BIT).linearVelocity)
+                }
+            )
         }
     }
 
     override fun endContact(contact: Contact) = Unit
 
-    override fun preSolve(contact: Contact, oldManifold: Manifold?) = Unit
+    override fun preSolve(contact: Contact, oldManifold: Manifold) = Unit
 
-    override fun postSolve(contact: Contact, impulse: ContactImpulse?) = Unit
+    override fun postSolve(contact: Contact, impulse: ContactImpulse) = Unit
 
     private fun getBody(contact: Contact, categoryBit: Short) = when {
         contact.fixtureA.filterData.categoryBits == categoryBit -> contact.fixtureA.body

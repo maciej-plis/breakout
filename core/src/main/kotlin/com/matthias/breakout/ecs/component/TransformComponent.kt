@@ -14,7 +14,7 @@ class TransformComponent : Component, Comparable<TransformComponent> {
     val size = Vector2(1f, 1f)
     val scale = Vector2(1f, 1f)
 
-    val rotationDeg = 0f
+    var rotationDeg = 0f
 
     fun setInitialPosition(x: Float, y: Float, z: Float) {
         position.set(x, y, z)

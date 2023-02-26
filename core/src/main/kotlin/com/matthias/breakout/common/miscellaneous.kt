@@ -13,6 +13,9 @@ inline fun <reified ScreenType : T, T : Screen> KtxGame<T>.setScreen(screen: Scr
     setScreen<ScreenType>()
 }
 
+val Int.half get() = this / 2
+val Float.half get() = this / 2
+
 fun Int.toMeters() = this / PPM
 fun Float.toMeters() = this / PPM
 

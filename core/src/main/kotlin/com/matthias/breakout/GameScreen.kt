@@ -1,18 +1,14 @@
 package com.matthias.breakout
 
 import com.badlogic.ashley.core.PooledEngine
+import com.badlogic.gdx.math.MathUtils.degreesToRadians
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
 import com.badlogic.gdx.physics.box2d.World
+import com.matthias.breakout.common.half
 import com.matthias.breakout.common.toMeters
-import com.matthias.breakout.contact.BALL_BIT
-import com.matthias.breakout.contact.GameContactListener
-import com.matthias.breakout.contact.PADDLE_BIT
-import com.matthias.breakout.contact.WALL_BIT
-import com.matthias.breakout.ecs.component.BallComponent
-import com.matthias.breakout.ecs.component.BodyComponent
-import com.matthias.breakout.ecs.component.PaddleComponent
-import com.matthias.breakout.ecs.component.TransformComponent
+import com.matthias.breakout.contact.*
+import com.matthias.breakout.ecs.component.*
 import com.matthias.breakout.ecs.system.*
 import com.matthias.breakout.event.GameEvent
 import com.matthias.breakout.event.GameEventManager
@@ -44,6 +40,8 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
             addSystem(PhysicsSystem(world))
             addSystem(PaddleBounceSystem(eventManager))
             addSystem(WallBounceSystem(eventManager))
+            addSystem(BlockBounceSystem(eventManager))
+            addSystem(BlockDestroySystem(eventManager))
             addSystem(PaddleKeyboardMovementSystem())
             addSystem(PaddleMouseMovementSystem(camera))
             addSystem(PaddleBoundarySystem(1f.toMeters(), camera.viewportWidth - 1f.toMeters()))
@@ -61,6 +59,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
         createRightWall()
         createPaddle()
         createBall()
+        createBlocks()
 
         camera.position.set((camera.viewportWidth / 2f), (camera.viewportHeight / 2f), 0f)
     }
@@ -168,11 +167,46 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
                     circle(0.5f.toMeters()) {
                         filter.categoryBits = BALL_BIT
                     }
-                    userData = -90f
+                    bullet = true
                     fixedRotation = true
+                    angle = -90f * degreesToRadians
                     linearVelocity.set(0f, -16f).toMeters()
                 }
             )
+        }
+    }
+
+    private fun createBlocks() {
+        val blocksPerLine = 12
+        val blockRows = 7
+        val spacing = 0.2f.toMeters()
+        val lineSpace = (camera.viewportWidth - 2f.toMeters()) - (spacing * (blocksPerLine + 1))
+
+        val blockWidth = lineSpace / blocksPerLine
+        val blockHeight = 1.5f.toMeters()
+
+        val blockPos = Vector2(1f.toMeters() + spacing + blockWidth.half, camera.viewportHeight - 1f.toMeters() - spacing - blockHeight.half)
+        for (i in 1..blockRows) {
+            for (j in 1..blocksPerLine) {
+                engine.entity {
+                    with<BlockComponent>()
+                    with<TransformComponent> {
+                        setInitialPosition(blockPos.x, blockPos.y, 1f)
+                        size.set(blockWidth, blockHeight)
+                    }
+                    entity += BodyComponent(
+                        world.body {
+                            position.set(blockPos.x, blockPos.y)
+                            box(blockWidth, blockHeight) {
+                                filter.categoryBits = BLOCK_BIT
+                            }
+                            userData = entity
+                        }
+                    )
+                }
+                blockPos.set(blockPos.x + blockWidth + spacing, blockPos.y)
+            }
+            blockPos.set(1f.toMeters() + spacing + blockWidth.half, blockPos.y - blockHeight - spacing)
         }
     }
 }
