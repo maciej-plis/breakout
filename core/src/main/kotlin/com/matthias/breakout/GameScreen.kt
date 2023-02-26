@@ -160,17 +160,17 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
             }
             with<TransformComponent> {
                 setInitialPosition(camera.viewportWidth / 2, camera.viewportHeight / 2, 1f)
-                size.set(1f, 1f)
+                size.set(1f, 1f).toMeters()
             }
             entity += BodyComponent(
                 world.body(type = DynamicBody) {
                     position.set(camera.viewportWidth / 2, camera.viewportHeight / 2)
-                    circle(0.5f / PPM) {
+                    circle(0.5f.toMeters()) {
                         filter.categoryBits = BALL_BIT
                     }
                     userData = -90f
                     fixedRotation = true
-                    linearVelocity.set(0f / PPM, -16f / PPM)
+                    linearVelocity.set(0f, -16f).toMeters()
                 }
             )
         }

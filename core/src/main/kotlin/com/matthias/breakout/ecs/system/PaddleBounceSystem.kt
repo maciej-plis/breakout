@@ -36,6 +36,7 @@ class PaddleBounceSystem(
             val angle = ((-60 * percent) + 90)
 
             ball.linearVelocity = velocityOnAngle(ballC.velocity, angle * degreesToRadians)
+            ball.setTransform(ball.position, ball.linearVelocity.angleRad())
         }
     }
 }

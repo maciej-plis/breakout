@@ -19,6 +19,9 @@ fun Float.toMeters() = this / PPM
 fun Int.toPixels() = this * PPM
 fun Float.toPixels() = this * PPM
 
+fun Vector2.toMeters() = scl(1 / PPM)
+fun Vector2.toPixels() = scl(PPM)
+
 val Vector2.width get() = x
 val Vector2.height get() = y
 

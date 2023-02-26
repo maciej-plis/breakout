@@ -19,7 +19,10 @@ class WallBounceSystem(
         eventManager.forEvent<BallWallHit> { event ->
             val bodyC = entity[BodyComponent.mapper]!!
 
-            bodyC.body.linearVelocity = event.ballContactVelocity.reflect(event.contactNormal)
+            bodyC.body.let { ball ->
+                ball.linearVelocity = event.ballContactVelocity.reflect(event.contactNormal)
+                ball.setTransform(ball.position, ball.linearVelocity.angleRad())
+            }
         }
     }
 }
