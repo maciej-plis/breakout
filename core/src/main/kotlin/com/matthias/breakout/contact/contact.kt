@@ -20,20 +20,25 @@ class GameContactListener(private val eventManager: GameEventManager<GameEvent>)
     override fun beginContact(contact: Contact) {
         when (contact.fixtureA.filterData.categoryBits or contact.fixtureB.filterData.categoryBits) {
             BALL_BIT or PADDLE_BIT -> eventManager.addEvent(
-                BallPaddleHit.apply {
+                BallPaddleHit().apply {
+                    ballEntity = getBody(contact, BALL_BIT).userData as Entity
+                    paddleEntity = getBody(contact, PADDLE_BIT).userData as Entity
                     paddleContactPoint.set(getBody(contact, PADDLE_BIT).getLocalPoint(contact.worldManifold.points.first()))
                 }
             )
 
             BALL_BIT or WALL_BIT -> eventManager.addEvent(
-                BallWallHit.apply {
+                BallWallHit().apply {
+                    ballEntity = getBody(contact, BALL_BIT).userData as Entity
+                    wallEntity = getBody(contact, WALL_BIT).userData as Entity
                     contactNormal.set(contact.worldManifold.normal)
                     ballContactVelocity.set(getBody(contact, BALL_BIT).linearVelocity)
                 }
             )
 
             BALL_BIT or BLOCK_BIT -> eventManager.addEvent(
-                BallBlockHit.apply {
+                BallBlockHit().apply {
+                    ballEntity = getBody(contact, BALL_BIT).userData as Entity
                     blockEntity = getBody(contact, BLOCK_BIT).userData as Entity
                     contactNormal.set(contact.worldManifold.normal)
                     ballContactVelocity.set(getBody(contact, BALL_BIT).linearVelocity)

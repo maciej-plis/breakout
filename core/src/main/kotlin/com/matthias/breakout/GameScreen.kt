@@ -47,6 +47,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
             addSystem(PaddleMouseMovementSystem(camera))
             addSystem(PaddleBoundarySystem(1f.toMeters(), camera.viewportWidth - 1f.toMeters()))
             addSystem(GameOverSystem(eventManager, 0f))
+            addSystem(DebugSystem { createBall() })
             addSystem(RemoveSystem(world))
             addSystem(PhysicsDebugRenderingSystem(world, camera))
         }
@@ -55,7 +56,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
     override fun show() {
         LOG.info { "Showing ${javaClass.simpleName}" }
 
-        createCeiling()
+        createTopWall()
         createLeftWall()
         createRightWall()
         createPaddle()
@@ -82,7 +83,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
         world.dispose()
     }
 
-    private fun createCeiling() {
+    private fun createTopWall() {
         engine.entity {
             with<TransformComponent> {
                 setInitialPosition(camera.viewportWidth / 2, camera.viewportHeight - 0.5f.toMeters(), 1f)
@@ -94,6 +95,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
                     box(camera.viewportWidth, 1f.toMeters()) {
                         filter.categoryBits = WALL_BIT
                     }
+                    userData = entity
                 }
             )
         }
@@ -111,6 +113,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
                     box(1f.toMeters(), camera.viewportHeight) {
                         filter.categoryBits = WALL_BIT
                     }
+                    userData = entity
                 }
             )
         }
@@ -128,6 +131,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
                     box(1f.toMeters(), camera.viewportHeight) {
                         filter.categoryBits = WALL_BIT
                     }
+                    userData = entity
                 }
             )
         }
@@ -148,6 +152,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
                     box(width = 10f.toMeters(), height = 1f.toMeters()) {
                         filter.categoryBits = PADDLE_BIT
                     }
+                    userData = entity
                 }
             )
         }
@@ -169,6 +174,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
                         filter.categoryBits = BALL_BIT
                         restitution = 1f
                     }
+                    userData = entity
                     bullet = true
                     fixedRotation = true
                     angle = -90f * degreesToRadians

@@ -11,18 +11,23 @@ sealed interface GameEvent {
         override fun toString() = "${javaClass.simpleName}()"
     }
 
-    object BallPaddleHit : GameEvent {
+    class BallPaddleHit : GameEvent {
+        var ballEntity: Entity = emptyEntity
+        var paddleEntity: Entity = emptyEntity
         val paddleContactPoint = Vector2(0f, 0f)
         override fun toString() = "${javaClass.simpleName}()"
     }
 
-    object BallWallHit : GameEvent {
+    class BallWallHit : GameEvent {
+        var ballEntity: Entity = emptyEntity
+        var wallEntity: Entity = emptyEntity
         val contactNormal = Vector2(0f, 0f)
         var ballContactVelocity = Vector2(0f, 0f)
         override fun toString() = "${javaClass.simpleName}()"
     }
 
-    object BallBlockHit : GameEvent {
+    class BallBlockHit : GameEvent {
+        var ballEntity: Entity = emptyEntity
         var blockEntity: Entity = emptyEntity
         val contactNormal = Vector2(0f, 0f)
         var ballContactVelocity = Vector2(0f, 0f)
@@ -34,8 +39,8 @@ class GameEventManager<T> {
 
     val eventQueue = HashSet<T>()
 
-    inline fun <reified U : T> forEvent(block: (U) -> Unit) {
-        eventQueue.find { it is U }?.let { block(it as U) }
+    inline fun <reified U : T> forEventsOfType(block: (U) -> Unit) {
+        eventQueue.filterIsInstance<U>().forEach { block(it) }
     }
 
     fun addEvent(event: T) {
