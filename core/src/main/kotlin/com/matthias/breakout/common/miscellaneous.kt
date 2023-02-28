@@ -36,3 +36,8 @@ val Body.y get() = position.y
 
 fun velocityOnAngle(velocity: Float, angle: Float) = Vector2(cos(angle) * velocity, sin(angle) * velocity)
 fun Vector2.reflect(normal: Vector2) = sub(normal.scl(2 * dot(normal)))
+
+data class OpenFloatRange(val from: Float, val to: Float)
+
+infix fun Float.open(to: Float) = OpenFloatRange(this, to)
+operator fun OpenFloatRange.contains(f: Float) = from < f && f < to

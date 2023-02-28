@@ -41,6 +41,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
             addSystem(PaddleBounceSystem(eventManager))
             addSystem(WallBounceSystem(eventManager))
             addSystem(BlockBounceSystem(eventManager))
+            addSystem(BallAngleBoundarySystem())
             addSystem(BlockDestroySystem(eventManager))
             addSystem(PaddleKeyboardMovementSystem())
             addSystem(PaddleMouseMovementSystem(camera))
@@ -166,6 +167,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
                     position.set(camera.viewportWidth / 2, camera.viewportHeight / 2)
                     circle(0.5f.toMeters()) {
                         filter.categoryBits = BALL_BIT
+                        restitution = 1f
                     }
                     bullet = true
                     fixedRotation = true
