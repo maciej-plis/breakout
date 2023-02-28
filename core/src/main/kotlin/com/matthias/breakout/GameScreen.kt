@@ -20,6 +20,7 @@ import ktx.box2d.body
 import ktx.box2d.box
 import ktx.box2d.circle
 import ktx.log.logger
+import kotlin.experimental.inv
 
 private val LOG = logger<GameScreen>()
 
@@ -172,6 +173,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
                     position.set(camera.viewportWidth / 2, camera.viewportHeight / 2)
                     circle(0.5f.toMeters()) {
                         filter.categoryBits = BALL_BIT
+                        filter.maskBits = BALL_BIT.inv()
                         restitution = 1f
                     }
                     userData = entity
