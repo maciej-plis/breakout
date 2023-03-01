@@ -1,12 +1,14 @@
 package com.matthias.breakout.common
 
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.MathUtils.cos
 import com.badlogic.gdx.math.MathUtils.sin
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.matthias.breakout.PPM
 import ktx.app.KtxGame
+import ktx.app.clearScreen
 
 inline fun <reified ScreenType : T, T : Screen> KtxGame<T>.setScreen(screen: ScreenType) {
     addScreen(screen)
@@ -41,3 +43,5 @@ data class OpenFloatRange(val from: Float, val to: Float)
 
 infix fun Float.open(to: Float) = OpenFloatRange(this, to)
 operator fun OpenFloatRange.contains(f: Float) = from < f && f < to
+
+fun clearScreen(color: Color) = clearScreen(color.r, color.g, color.b, color.a)

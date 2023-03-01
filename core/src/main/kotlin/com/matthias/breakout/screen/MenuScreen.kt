@@ -1,4 +1,4 @@
-package com.matthias.breakout
+package com.matthias.breakout.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input.Keys.*
@@ -17,35 +17,28 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.matthias.breakout.BreakoutGame
 import com.matthias.breakout.assets.SkinAsset.MENU_SKIN
 import com.matthias.breakout.common.setScreen
 import ktx.actors.onKeyDown
 import ktx.actors.onKeyUp
-import ktx.app.KtxScreen
-import ktx.app.clearScreen
-import ktx.assets.async.AssetStorage
 import ktx.log.logger
 import kotlin.math.max
 import kotlin.math.min
 
 private val LOG = logger<MenuScreen>()
 
-class MenuScreen(
-    private val game: BreakoutGame,
-    private val assets: AssetStorage = game.assets
-) : KtxScreen {
+class MenuScreen(game: BreakoutGame) : ScreenBase(game) {
 
-    private val stage = Stage(game.uiViewport, game.batch)
+    private val stage = Stage(game.uiViewport, batch)
 
     override fun show() {
         LOG.info { "Showing ${javaClass.simpleName}" }
         Gdx.input.inputProcessor = stage
-
         setupMenuStage()
     }
 
     override fun render(delta: Float) {
-        clearScreen(.40784314f, .40784314f, .5294118f)
         stage.run {
             viewport.apply()
             act(delta)

@@ -1,4 +1,4 @@
-package com.matthias.breakout
+package com.matthias.breakout.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions.forever
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.matthias.breakout.BreakoutGame
 import com.matthias.breakout.assets.AtlasAsset.LOADING_ATLAS
 import com.matthias.breakout.assets.AtlasAsset.MENU_ATLAS
 import com.matthias.breakout.assets.SkinAsset.LOADING_SKIN
@@ -15,23 +16,21 @@ import com.matthias.breakout.common.setScreen
 import com.matthias.breakout.common.textSequence
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
-import ktx.app.KtxScreen
-import ktx.app.clearScreen
-import ktx.assets.async.AssetStorage
 import ktx.async.KtxAsync
 import ktx.log.logger
 
 private val LOG = logger<LoadingScreen>()
 
-class LoadingScreen(
-    private val game: BreakoutGame,
-    private val assets: AssetStorage = game.assets
-) : KtxScreen {
+class LoadingScreen(game: BreakoutGame) : ScreenBase(game) {
 
     private val stage = Stage(game.uiViewport, game.batch)
     private var progressBar: ProgressBar? = null
 
-    init {
+    override fun show() {
+        LOG.info { "Showing ${javaClass.simpleName}" }
+        Gdx.input.inputProcessor = stage
+
+        KtxAsync.initiate()
         KtxAsync.launch {
             assets.loadAsync(LOADING_SCREEN_ASSETS).joinAll()
             setupLoadingScreenStage()
@@ -42,13 +41,7 @@ class LoadingScreen(
         }
     }
 
-    override fun show() {
-        LOG.info { "Showing ${javaClass.simpleName}" }
-        Gdx.input.inputProcessor = stage
-    }
-
     override fun render(delta: Float) {
-        clearScreen(.40784314f, .40784314f, .5294118f)
         stage.run {
             viewport.apply()
             act(delta)

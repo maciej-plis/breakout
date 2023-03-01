@@ -1,10 +1,11 @@
-package com.matthias.breakout
+package com.matthias.breakout.screen
 
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.math.MathUtils.degreesToRadians
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
 import com.badlogic.gdx.physics.box2d.World
+import com.matthias.breakout.BreakoutGame
 import com.matthias.breakout.common.half
 import com.matthias.breakout.common.toMeters
 import com.matthias.breakout.contact.*
@@ -12,7 +13,6 @@ import com.matthias.breakout.ecs.component.*
 import com.matthias.breakout.ecs.system.*
 import com.matthias.breakout.event.GameEvent
 import com.matthias.breakout.event.GameEventManager
-import ktx.app.clearScreen
 import ktx.ashley.entity
 import ktx.ashley.plusAssign
 import ktx.ashley.with
@@ -68,8 +68,6 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
     }
 
     override fun render(delta: Float) {
-        clearScreen(.40784314f, .40784314f, .5294118f)
-
         game.gameViewport.apply()
         engine.update(delta)
         eventManager.clear()
@@ -195,9 +193,9 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
         val blockWidth = lineSpace / blocksPerLine
         val blockHeight = 1.5f.toMeters()
 
-        val blockPos = Vector2(1f.toMeters() + spacing + blockWidth.half, camera.viewportHeight - 1f.toMeters() - spacing - blockHeight.half)
+        val blockPos = Vector2(1f.toMeters() + (spacing + blockWidth.half) * 3, camera.viewportHeight - 1f.toMeters() + (-spacing - blockHeight.half) * 3)
         for (i in 1..blockRows) {
-            for (j in 1..blocksPerLine) {
+            for (j in 1..blocksPerLine - 2) {
                 engine.entity {
                     with<BlockComponent>()
                     with<TransformComponent> {
@@ -216,7 +214,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
                 }
                 blockPos.set(blockPos.x + blockWidth + spacing, blockPos.y)
             }
-            blockPos.set(1f.toMeters() + spacing + blockWidth.half, blockPos.y - blockHeight - spacing)
+            blockPos.set(1f.toMeters() + (spacing + blockWidth.half) * 3, blockPos.y - blockHeight - spacing)
         }
     }
 }
