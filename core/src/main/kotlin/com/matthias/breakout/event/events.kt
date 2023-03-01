@@ -3,36 +3,29 @@ package com.matthias.breakout.event
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.math.Vector2
 
-private val emptyEntity = Entity()
-
 sealed interface GameEvent {
 
-    object GameOverEvent : GameEvent {
-        override fun toString() = "${javaClass.simpleName}()"
-    }
+    object GameOverEvent : GameEvent
 
-    class BallPaddleHit : GameEvent {
-        var ballEntity: Entity = emptyEntity
-        var paddleEntity: Entity = emptyEntity
-        val paddleContactPoint = Vector2(0f, 0f)
-        override fun toString() = "${javaClass.simpleName}()"
-    }
+    data class BallPaddleHit(
+        val ballEntity: Entity,
+        val paddleEntity: Entity,
+        val paddleContactPoint: Vector2
+    ) : GameEvent
 
-    class BallWallHit : GameEvent {
-        var ballEntity: Entity = emptyEntity
-        var wallEntity: Entity = emptyEntity
-        val contactNormal = Vector2(0f, 0f)
-        var ballContactVelocity = Vector2(0f, 0f)
-        override fun toString() = "${javaClass.simpleName}()"
-    }
+    data class BallWallHit(
+        val ballEntity: Entity,
+        val wallEntity: Entity,
+        val contactNormal: Vector2,
+        val ballContactVelocity: Vector2
+    ) : GameEvent
 
-    class BallBlockHit : GameEvent {
-        var ballEntity: Entity = emptyEntity
-        var blockEntity: Entity = emptyEntity
-        val contactNormal = Vector2(0f, 0f)
-        var ballContactVelocity = Vector2(0f, 0f)
-        override fun toString() = "${javaClass.simpleName}()"
-    }
+    data class BallBlockHit(
+        val ballEntity: Entity,
+        val blockEntity: Entity,
+        val contactNormal: Vector2,
+        val ballContactVelocity: Vector2
+    ) : GameEvent
 }
 
 class GameEventManager<T> {

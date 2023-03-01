@@ -1,10 +1,7 @@
 package com.matthias.breakout.contact
 
 import com.badlogic.ashley.core.Entity
-import com.badlogic.gdx.physics.box2d.Contact
-import com.badlogic.gdx.physics.box2d.ContactImpulse
-import com.badlogic.gdx.physics.box2d.ContactListener
-import com.badlogic.gdx.physics.box2d.Manifold
+import com.badlogic.gdx.physics.box2d.*
 import com.matthias.breakout.event.GameEvent
 import com.matthias.breakout.event.GameEvent.*
 import com.matthias.breakout.event.GameEventManager
@@ -20,29 +17,29 @@ class GameContactListener(private val eventManager: GameEventManager<GameEvent>)
     override fun beginContact(contact: Contact) {
         when (contact.fixtureA.filterData.categoryBits or contact.fixtureB.filterData.categoryBits) {
             BALL_BIT or PADDLE_BIT -> eventManager.addEvent(
-                BallPaddleHit().apply {
-                    ballEntity = getBody(contact, BALL_BIT).userData as Entity
-                    paddleEntity = getBody(contact, PADDLE_BIT).userData as Entity
-                    paddleContactPoint.set(getBody(contact, PADDLE_BIT).getLocalPoint(contact.worldManifold.points.first()))
-                }
+                BallPaddleHit(
+                    getEntity(contact, BALL_BIT),
+                    getEntity(contact, PADDLE_BIT),
+                    getBody(contact, PADDLE_BIT).getLocalPoint(contact.worldManifold.points.first())
+                )
             )
 
             BALL_BIT or WALL_BIT -> eventManager.addEvent(
-                BallWallHit().apply {
-                    ballEntity = getBody(contact, BALL_BIT).userData as Entity
-                    wallEntity = getBody(contact, WALL_BIT).userData as Entity
-                    contactNormal.set(contact.worldManifold.normal)
-                    ballContactVelocity.set(getBody(contact, BALL_BIT).linearVelocity)
-                }
+                BallWallHit(
+                    getEntity(contact, BALL_BIT),
+                    getEntity(contact, WALL_BIT),
+                    contact.worldManifold.normal,
+                    getBody(contact, BALL_BIT).linearVelocity
+                )
             )
 
             BALL_BIT or BLOCK_BIT -> eventManager.addEvent(
-                BallBlockHit().apply {
-                    ballEntity = getBody(contact, BALL_BIT).userData as Entity
-                    blockEntity = getBody(contact, BLOCK_BIT).userData as Entity
-                    contactNormal.set(contact.worldManifold.normal)
-                    ballContactVelocity.set(getBody(contact, BALL_BIT).linearVelocity)
-                }
+                BallBlockHit(
+                    getEntity(contact, BALL_BIT),
+                    getEntity(contact, BLOCK_BIT),
+                    contact.worldManifold.normal,
+                    getBody(contact, BALL_BIT).linearVelocity
+                )
             )
         }
     }
@@ -56,6 +53,10 @@ class GameContactListener(private val eventManager: GameEventManager<GameEvent>)
     private fun getBody(contact: Contact, categoryBit: Short) = when {
         contact.fixtureA.filterData.categoryBits == categoryBit -> contact.fixtureA.body
         contact.fixtureB.filterData.categoryBits == categoryBit -> contact.fixtureB.body
-        else -> throw IllegalStateException()
+        else -> throw IllegalStateException("No participant in contact for categoryBit")
     }
+
+    private fun getEntity(contact: Contact, categoryBit: Short) = getEntity(getBody(contact, categoryBit))
+
+    private fun getEntity(body: Body) = (body.userData as? Entity) ?: throw IllegalStateException("Body has no entity assigned")
 }
