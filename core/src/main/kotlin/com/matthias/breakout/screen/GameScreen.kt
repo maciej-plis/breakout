@@ -1,6 +1,8 @@
 package com.matthias.breakout.screen
 
 import com.badlogic.ashley.core.PooledEngine
+import com.badlogic.gdx.Application.LOG_DEBUG
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.MathUtils.degreesToRadians
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
@@ -65,6 +67,8 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
         createBlocks()
 
         camera.position.set((camera.viewportWidth / 2f), (camera.viewportHeight / 2f), 0f)
+
+        Gdx.app.logLevel = LOG_DEBUG
     }
 
     override fun render(delta: Float) {
@@ -160,7 +164,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
     private fun createBall() {
         engine.entity {
             with<BallComponent>() {
-                velocity = 32f.toMeters()
+                velocity = 16f.toMeters()
             }
             with<TransformComponent> {
                 setInitialPosition(camera.viewportWidth / 2, camera.viewportHeight / 2, 1f)
