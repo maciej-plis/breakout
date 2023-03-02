@@ -18,9 +18,11 @@ class BlockDestroySystem(private val eventManager: GameEventManager<GameEvent>) 
         eventManager.forEventsOfType<BallBlockHit> { event ->
             val blockC = event.blockEntity[BlockComponent.mapper]!!
 
-            if (--blockC.lives <= 0) {
+            if (--blockC.lives == 0) {
                 LOG.debug { "Block destroyed" }
-                event.blockEntity += RemoveComponent()
+                event.blockEntity += RemoveComponent().apply {
+                    delay = 0.05f
+                }
             }
         }
     }
