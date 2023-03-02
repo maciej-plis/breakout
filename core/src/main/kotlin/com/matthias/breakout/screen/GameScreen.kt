@@ -164,7 +164,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
     private fun createBall() {
         engine.entity {
             with<BallComponent>() {
-                velocity = 16f.toMeters()
+                velocity = 32f.toMeters()
             }
             with<TransformComponent> {
                 setInitialPosition(camera.viewportWidth / 2, camera.viewportHeight / 2, 1f)

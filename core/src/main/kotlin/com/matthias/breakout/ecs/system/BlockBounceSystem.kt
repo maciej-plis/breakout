@@ -17,7 +17,7 @@ private val LOG = logger<BlockBounceSystem>()
 class BlockBounceSystem(private val eventManager: GameEventManager<GameEvent>) : EntitySystem() {
 
     override fun update(delta: Float) {
-        eventManager.forEventsOfType<BallBlockHit> { event ->
+        eventManager.forFirstEventOfType<BallBlockHit> { event ->
             val ballC = event.ballEntity[BallComponent.mapper]!!
             val bodyC = event.ballEntity[BodyComponent.mapper]!!
 

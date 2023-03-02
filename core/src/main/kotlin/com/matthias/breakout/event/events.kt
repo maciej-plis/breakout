@@ -36,6 +36,10 @@ class GameEventManager<T> {
         eventQueue.filterIsInstance<U>().forEach { block(it) }
     }
 
+    inline fun <reified U : T> forFirstEventOfType(block: (U) -> Unit) {
+        eventQueue.filterIsInstance<U>().firstOrNull()?.let { block(it) }
+    }
+
     fun addEvent(event: T) {
         eventQueue.add(event)
     }
