@@ -1,8 +1,8 @@
 [versions]
-kotlin = "1.8.10"
-kotlinCorutines = "1.6.4"
-libGDX = "1.11.0"
-libKTX = "1.11.0-rc4"
+kotlin = "1.9.0"
+kotlinCorutines = "1.7.3"
+libGDX = "1.12.0"
+libKTX = "1.12.0-rc1"
 stripe = "1.4.2"
 tenPatch = "5.2.3"
 
