@@ -1,7 +1,7 @@
 import static org.gradle.api.file.DuplicatesStrategy.EXCLUDE
 
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "$kotlinVersion"
+    alias(libs.plugins.kotlin)
 }
 
 sourceSets.main {
@@ -9,16 +9,15 @@ sourceSets.main {
 }
 
 dependencies {
-    implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion")
-    implementation("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop")
-    implementation("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop")
+    implementation libs.libGDX.backend.lwjgl3
+    implementation libs.libGDX.platform, classifier("natives-desktop")
+    implementation libs.libGDX.box2d.platform, classifier("natives-desktop")
 
-    implementation(project(":core"))
+    implementation project(":core")
 }
 
 jar {
     archiveBaseName = "$rootProject.name"
-
     duplicatesStrategy(EXCLUDE)
     dependsOn configurations.runtimeClasspath
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
@@ -28,4 +27,8 @@ jar {
             "Main-Class": "com.matthias.breakout.DesktopLauncherKt"
         ])
     }
+}
+
+def classifier(String value) {
+    return { artifact { classifier = value } }
 }

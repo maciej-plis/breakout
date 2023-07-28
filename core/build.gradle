@@ -1,30 +1,18 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "$kotlinVersion"
     id "java-library"
+    alias libs.plugins.kotlin
 }
 
 dependencies {
-    api("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
-    api("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
+    api libs.kotlin
+    api libs.kotlin.reflection
+    api libs.kotlin.corutines
 
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCorutinesVersion")
+    api libs.libGDX
+    api libs.libGDX.box2d
 
-    api("com.badlogicgames.gdx:gdx:$gdxVersion")
-    api("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
+    api libs.bundles.libKTX
 
-    api("io.github.libktx:ktx-app:$ktxVersion")
-    api("io.github.libktx:ktx-log:$ktxVersion")
-    api("io.github.libktx:ktx-graphics:$ktxVersion")
-    api("io.github.libktx:ktx-assets:$ktxVersion")
-    api("io.github.libktx:ktx-ashley:$ktxVersion")
-    api("io.github.libktx:ktx-collections:$ktxVersion")
-    api("io.github.libktx:ktx-assets-async:$ktxVersion")
-    api("io.github.libktx:ktx-preferences:$ktxVersion")
-    api("io.github.libktx:ktx-style:$ktxVersion")
-    api("io.github.libktx:ktx-scene2d:$ktxVersion")
-    api("io.github.libktx:ktx-actors:$ktxVersion")
-    api("io.github.libktx:ktx-box2d:$ktxVersion")
-
-    api("com.github.raeleus.stripe:stripe:$stripeVersion")
-    api("com.github.raeleus.TenPatch:tenpatch:$tenPatchVersion")
+    api libs.stripe
+    api libs.tenPatch
 }

@@ -12,4 +12,7 @@ dependencyResolutionManagement {
     }
 }
 
-include 'desktop', 'core'
+include(
+    'desktop',
+    'core'
+)
