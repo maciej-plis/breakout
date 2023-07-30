@@ -12,7 +12,6 @@ import com.matthias.breakout.assets.AtlasAsset.MENU_ATLAS
 import com.matthias.breakout.assets.SkinAsset.LOADING_SKIN
 import com.matthias.breakout.assets.SkinAsset.MENU_SKIN
 import com.matthias.breakout.assets.loadAsync
-import com.matthias.breakout.common.setScreen
 import com.matthias.breakout.common.textSequence
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
@@ -28,6 +27,8 @@ class LoadingScreen(game: BreakoutGame) : ScreenBase(game) {
 
     override fun show() {
         LOG.info { "Showing ${javaClass.simpleName}" }
+        super.show()
+
         Gdx.input.inputProcessor = stage
 
         KtxAsync.initiate()
@@ -75,8 +76,8 @@ class LoadingScreen(game: BreakoutGame) : ScreenBase(game) {
     }
 
     private fun proceedToMenuScreen() {
-        game.setScreen(MenuScreen(game))
-        game.removeScreen<LoadingScreen>()?.dispose()
+        game.screenManager.pushScreen("MenuScreen", null)
+//        game.removeScreen<LoadingScreen>()?.dispose()
     }
 
     private fun updateProgressBar() {

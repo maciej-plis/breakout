@@ -5,6 +5,7 @@ libGDX = "1.12.0"
 libKTX = "1.12.0-rc1"
 stripe = "1.4.2"
 tenPatch = "5.2.3"
+screenManager = "0.6.9"
 
 [libraries]
 kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -27,9 +28,10 @@ libKTX-style = { group = "io.github.libktx", name = "ktx-style", version.ref = "
 libKTX-scene2d = { group = "io.github.libktx", name = "ktx-scene2d", version.ref = "libKTX" }
 libKTX-actors = { group = "io.github.libktx", name = "ktx-actors", version.ref = "libKTX" }
 libKTX-box2d = { group = "io.github.libktx", name = "ktx-box2d", version.ref = "libKTX" }
-stripe = { group = "com.github.raeleus.stripe", name = "stripe", version.ref = "stripe"}
-tenPatch = { group = "com.github.raeleus.TenPatch", name = "tenpatch", version.ref = "tenPatch"}
-ashley = { group = "com.github.raeleus.TenPatch", name = "tenpatch", version.ref = "tenPatch"}
+stripe = { group = "com.github.raeleus.stripe", name = "stripe", version.ref = "stripe" }
+tenPatch = { group = "com.github.raeleus.TenPatch", name = "tenpatch", version.ref = "tenPatch" }
+ashley = { group = "com.github.raeleus.TenPatch", name = "tenpatch", version.ref = "tenPatch" }
+screenManager = { group = "com.github.crykn", name = "libgdx-screenmanager", version.ref = "screenManager" }
 
 [bundles]
 libKTX = ["libKTX-app", "libKTX-log", "libKTX-graphics", "libKTX-assets", "libKTX-ashley", "libKTX-collections", "libKTX-assets-async", "libKTX-preferences", "libKTX-style", "libKTX-scene2d", "libKTX-actors", "libKTX-box2d"]

@@ -58,6 +58,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
 
     override fun show() {
         LOG.info { "Showing ${javaClass.simpleName}" }
+        super.show()
 
         createTopWall()
         createLeftWall()
@@ -65,8 +66,6 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
         createPaddle()
         createBall()
         createBlocks()
-
-        camera.position.set((camera.viewportWidth / 2f), (camera.viewportHeight / 2f), 0f)
 
         Gdx.app.logLevel = LOG_DEBUG
     }
@@ -78,7 +77,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
     }
 
     override fun resize(width: Int, height: Int) {
-        game.gameViewport.update(width, height)
+        game.gameViewport.update(width, height, true)
     }
 
     override fun dispose() {
