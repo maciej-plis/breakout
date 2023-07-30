@@ -1,8 +1,6 @@
 package com.matthias.breakout.screen
 
 import com.badlogic.ashley.core.PooledEngine
-import com.badlogic.gdx.Application.LOG_DEBUG
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.MathUtils.degreesToRadians
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
@@ -56,8 +54,9 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
         }
     }
 
+    override val viewport = game.gameViewport
+
     override fun show() {
-        LOG.info { "Showing ${javaClass.simpleName}" }
         super.show()
 
         createTopWall()
@@ -66,23 +65,11 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
         createPaddle()
         createBall()
         createBlocks()
-
-        Gdx.app.logLevel = LOG_DEBUG
     }
 
-    override fun render(delta: Float) {
-        game.gameViewport.apply()
+    override fun update(delta: Float) {
         engine.update(delta)
         eventManager.clear()
-    }
-
-    override fun resize(width: Int, height: Int) {
-        game.gameViewport.update(width, height, true)
-    }
-
-    override fun dispose() {
-        LOG.info { "Disposing ${javaClass.simpleName}" }
-        world.dispose()
     }
 
     private fun createTopWall() {

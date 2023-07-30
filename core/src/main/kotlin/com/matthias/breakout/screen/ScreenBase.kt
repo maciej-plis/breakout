@@ -4,6 +4,7 @@ import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.matthias.breakout.BreakoutGame
 import de.eskalon.commons.screen.ManagedScreen
@@ -53,6 +54,16 @@ abstract class ScreenBase(
 
     override fun dispose() {
         LOG.debug { "Disposing ${javaClass.simpleName}" }
+        javaClass.declaredFields.forEach {
+            it.isAccessible = true
+            var fieldValue = it.get(this)
+            fieldValue = (fieldValue as? Lazy<*>)?.value
+
+            if (fieldValue is Disposable) {
+                LOG.debug { "Disposing ${fieldValue.javaClass.simpleName} from ${javaClass.simpleName}" }
+                fieldValue.dispose()
+            }
+        }
     }
 
     override fun getClearColor() = clearColor
