@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputEvent.Type.touchDown
 import com.badlogic.gdx.scenes.scene2d.InputEvent.Type.touchUp
 import com.badlogic.gdx.scenes.scene2d.InputListener
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.Touchable.enabled
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.*
@@ -27,33 +26,11 @@ import kotlin.math.min
 
 private val LOG = logger<MenuScreen>()
 
-class MenuScreen(game: BreakoutGame) : ScreenBase(game) {
+class MenuScreen(game: BreakoutGame) : StageScreenBase(game) {
 
-    private val stage = Stage(game.uiViewport, batch)
-
-    override fun show() {
-        LOG.info { "Showing ${javaClass.simpleName}" }
-        super.show()
-
-        Gdx.input.inputProcessor = stage
+    override fun create() {
+        super.create()
         setupMenuStage()
-    }
-
-    override fun render(delta: Float) {
-        stage.run {
-            viewport.apply()
-            act(delta)
-            draw()
-        }
-    }
-
-    override fun resize(width: Int, height: Int) {
-        stage.viewport.update(width, height, true)
-    }
-
-    override fun dispose() {
-        LOG.info { "Disposing ${javaClass.simpleName}" }
-        stage.dispose()
     }
 
     private fun setupMenuStage() {
