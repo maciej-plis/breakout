@@ -11,6 +11,7 @@ import com.matthias.breakout.assets.SkinAsset.LOADING_SKIN
 import com.matthias.breakout.assets.SkinAsset.MENU_SKIN
 import com.matthias.breakout.assets.loadAsync
 import com.matthias.breakout.assets.loadSync
+import com.matthias.breakout.common.pushScreen
 import com.matthias.breakout.common.textSequence
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
@@ -59,7 +60,7 @@ class LoadingScreen(game: BreakoutGame) : StageScreenBase(game) {
     }
 
     private fun proceedToMenuScreen() {
-        game.screenManager.pushScreen("MenuScreen", null)
+        game.screenManager.pushScreen<MenuScreen>()
     }
 
     private fun updateProgressBar() {

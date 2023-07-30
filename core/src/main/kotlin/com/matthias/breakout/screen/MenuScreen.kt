@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.matthias.breakout.BreakoutGame
 import com.matthias.breakout.assets.SkinAsset.MENU_SKIN
+import com.matthias.breakout.common.pushScreen
 import ktx.actors.onKeyDown
 import ktx.actors.onKeyUp
 import ktx.log.logger
@@ -126,6 +127,6 @@ class MenuScreen(game: BreakoutGame) : StageScreenBase(game) {
 
     private fun proceedToGameScreen() {
         stage.root.isVisible = false
-        game.screenManager.pushScreen("GameScreen", null)
+        game.screenManager.pushScreen<GameScreen>()
     }
 }

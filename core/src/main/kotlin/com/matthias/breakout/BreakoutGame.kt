@@ -4,8 +4,12 @@ import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.math.Interpolation.pow2In
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.matthias.breakout.common.addScreen
+import com.matthias.breakout.common.addScreenTransition
+import com.matthias.breakout.common.pushScreen
 import com.matthias.breakout.common.toMeters
 import com.matthias.breakout.screen.GameScreen
 import com.matthias.breakout.screen.LoadingScreen
@@ -14,6 +18,7 @@ import com.ray3k.stripe.scenecomposer.SceneComposerStageBuilder
 import de.eskalon.commons.core.ManagedGame
 import de.eskalon.commons.screen.ManagedScreen
 import de.eskalon.commons.screen.transition.ScreenTransition
+import de.eskalon.commons.screen.transition.impl.BlendingTransition
 import ktx.assets.async.AssetStorage
 import ktx.async.KtxAsync
 import ktx.log.logger
@@ -44,11 +49,13 @@ class BreakoutGame : ManagedGame<ManagedScreen, ScreenTransition>() {
 
         KtxAsync.initiate()
 
-        this.screenManager.addScreen("LoadingScreen", LoadingScreen(this))
-        this.screenManager.addScreen("MenuScreen", MenuScreen(this))
-        this.screenManager.addScreen("GameScreen", GameScreen(this))
+        screenManager.addScreen(LoadingScreen(this))
+        screenManager.addScreen(MenuScreen(this))
+        screenManager.addScreen(GameScreen(this))
 
-        this.screenManager.pushScreen("LoadingScreen", null)
+        screenManager.addScreenTransition(BlendingTransition(batch, 1f, pow2In))
+
+        screenManager.pushScreen<LoadingScreen>()
     }
 
     override fun dispose() {
