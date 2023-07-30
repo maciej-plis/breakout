@@ -42,7 +42,10 @@ enum class SkinAsset(
     MENU_SKIN("menu-skin.json", MENU_ATLAS)
 }
 
+suspend fun AssetStorage.load(assets: List<AssetDescriptor<*>>) = assets.map { load(it) }
+suspend fun AssetStorage.unload(assets: List<AssetDescriptor<*>>) = assets.map { unload(it) }
 fun AssetStorage.loadAsync(assets: List<AssetDescriptor<*>>) = assets.map { loadAsync(it) }
+fun AssetStorage.loadSync(assets: List<AssetDescriptor<*>>) = assets.map { loadSync(it) }
 
 private fun BitmapFontParameter(textureAtlasPath: String) = BitmapFontParameter().apply { atlasName = textureAtlasPath }
 

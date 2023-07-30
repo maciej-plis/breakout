@@ -1,12 +1,20 @@
 package com.matthias.breakout.screen
 
+import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.matthias.breakout.BG_COLOR
+import com.badlogic.gdx.utils.viewport.Viewport
 import com.matthias.breakout.BreakoutGame
 import de.eskalon.commons.screen.ManagedScreen
 import ktx.assets.async.AssetStorage
+import ktx.collections.GdxArray
+import ktx.collections.gdxArrayOf
+import ktx.log.logger
+
+private val LOG = logger<ScreenBase>()
+
+private val BG_COLOR = Color(.40784314f, .40784314f, .5294118f, 1f)
 
 abstract class ScreenBase(
     val game: BreakoutGame,
@@ -15,15 +23,39 @@ abstract class ScreenBase(
     val camera: Camera = game.camera
 ) : ManagedScreen() {
 
-    override fun create() = Unit
+    internal open val clearColor: Color = BG_COLOR
+    internal open val inputProcessors: GdxArray<InputProcessor> = gdxArrayOf()
+    internal open val viewport: Viewport? = null
 
-    override fun hide() = Unit
+    override fun create() {
+        LOG.debug { "Creating ${javaClass.simpleName}" }
+    }
 
-    override fun render(delta: Float) = Unit
+    override fun show() {
+        LOG.debug { "Showing ${javaClass.simpleName}" }
+        super.show()
+    }
 
-    override fun resize(width: Int, height: Int) = Unit
+    override fun hide() {
+        LOG.debug { "Hiding ${javaClass.simpleName}" }
+    }
 
-    override fun dispose() = Unit
+    open fun update(delta: Float) = Unit
 
-    override fun getClearColor(): Color = BG_COLOR
+    override fun render(delta: Float) {
+        update(delta)
+    }
+
+    override fun resize(width: Int, height: Int) {
+        LOG.debug { "Resizing ${javaClass.simpleName}" }
+        viewport?.update(width, height, true)
+    }
+
+    override fun dispose() {
+        LOG.debug { "Disposing ${javaClass.simpleName}" }
+    }
+
+    override fun getClearColor() = clearColor
+
+    override fun getInputProcessors() = inputProcessors
 }
