@@ -1,19 +1,14 @@
 package com.matthias.breakout.common
 
-import com.badlogic.gdx.Screen
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.MathUtils.cos
 import com.badlogic.gdx.math.MathUtils.sin
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
+import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.matthias.breakout.PPM
-import ktx.app.KtxGame
-import ktx.app.clearScreen
-
-inline fun <reified ScreenType : T, T : Screen> KtxGame<T>.setScreen(screen: ScreenType) {
-    addScreen(screen)
-    setScreen<ScreenType>()
-}
 
 val Int.half get() = this / 2
 val Float.half get() = this / 2
@@ -39,4 +34,14 @@ val Body.y get() = position.y
 fun velocityOnAngle(velocity: Float, angle: Float) = Vector2(cos(angle) * velocity, sin(angle) * velocity)
 fun Vector2.reflect(normal: Vector2) = sub(normal.scl(2 * dot(normal)))
 
-fun clearScreen(color: Color) = clearScreen(color.r, color.g, color.b, color.a)
+inline fun <T : Actor> T.onMove(
+    crossinline listener: T.() -> Boolean?,
+): InputListener {
+    val clickListener = object : ClickListener() {
+        override fun mouseMoved(event: InputEvent?, x: Float, y: Float): Boolean {
+            return listener() ?: super.mouseMoved(event, x, y)
+        }
+    }
+    addListener(clickListener)
+    return clickListener
+}

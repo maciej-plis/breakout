@@ -13,6 +13,7 @@ dependencies {
 
     api libs.bundles.libKTX
 
+    api libs.scene2DUtils
     api libs.screenManager
     api libs.stripe
     api libs.tenPatch

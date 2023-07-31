@@ -5,12 +5,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.matthias.breakout.BreakoutGame
 import ktx.collections.gdxArrayOf
 
-open class StageScreenBase(game: BreakoutGame) : ScreenBase(game) {
+abstract class StageScreenBase(game: BreakoutGame) : ScreenBase(game) {
 
-    val stage = Stage(game.uiViewport, batch)
+    open val stage = Stage(game.uiViewport, batch)
 
-    override val inputProcessors = gdxArrayOf<InputProcessor>(stage)
-    override val viewport = stage.viewport
+    override val inputProcessors by lazy { gdxArrayOf<InputProcessor>(stage) }
+    override val viewport = game.uiViewport
 
     override fun render(delta: Float) {
         super.render(delta)
