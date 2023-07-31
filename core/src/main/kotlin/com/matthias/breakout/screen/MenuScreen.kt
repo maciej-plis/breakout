@@ -22,10 +22,10 @@ private val LOG = logger<MenuScreen>()
 
 class MenuScreen(game: BreakoutGame) : StageScreenBase(game) {
 
-    private val playBtn by lazy { stage.root.findActor<TextButton>("play-button") }
-    private val optionsBtn by lazy { stage.root.findActor<TextButton>("options-button") }
-    private val helpBtn by lazy { stage.root.findActor<TextButton>("help-button") }
-    private val quitBtn by lazy { stage.root.findActor<TextButton>("quit-button") }
+    private val playBtn by lazy { findActor<TextButton>("play-button") }
+    private val optionsBtn by lazy { findActor<TextButton>("options-button") }
+    private val helpBtn by lazy { findActor<TextButton>("help-button") }
+    private val quitBtn by lazy { findActor<TextButton>("quit-button") }
 
     override val stage = ControllerMenuStage(viewport, batch)
 
@@ -54,19 +54,17 @@ class MenuScreen(game: BreakoutGame) : StageScreenBase(game) {
 
     private fun setupInitialTransition() {
         stage.draw() // Single stage draw to compute actor positions
-        val progressBarContainer = stage.root.findActor<Table>("progress-bar-container-before").apply { localToStageCoordinates(Vector2(0f, 0f)) }
-        val targetPos = stage.root.findActor<Table>("progress-bar-container-after")?.localToStageCoordinates(Vector2(0f, 0f))
+        val progressBarContainer = findActor<Table>("progress-bar-container-before").apply { localToStageCoordinates(Vector2(0f, 0f)) }
+        val targetPos = findActor<Table>("progress-bar-container-after").localToStageCoordinates(Vector2(0f, 0f))
 
-        if (progressBarContainer != null && targetPos != null) {
-            progressBarContainer.addAction(sequence(
-                moveTo(targetPos.x, targetPos.y, .8f, bounceOut),
-                Actions.run { setupMenuFadeInTransition(progressBarContainer) }
-            ))
-        }
+        progressBarContainer.addAction(sequence(
+            moveTo(targetPos.x, targetPos.y, .8f, bounceOut),
+            Actions.run { setupMenuFadeInTransition(progressBarContainer) }
+        ))
     }
 
     private fun setupMenuFadeInTransition(progressBarContainer: Actor) {
-        stage.root.findActor<Table>("menu")?.let { menu ->
+        findActor<Table>("menu").let { menu ->
             menu.addAction(sequence(
                 fadeIn(.5f),
                 Actions.run { menu.touchable = enabled },

@@ -25,7 +25,7 @@ private val REQUIRED_GAME_ASSETS = listOf(MENU_ATLAS.descriptor, MENU_SKIN.descr
 
 class LoadingScreen(game: BreakoutGame) : StageScreenBase(game) {
 
-    private val progressBar: ProgressBar by lazy { stage.root.findActor("progress-bar") }
+    private val progressBar: ProgressBar by lazy { findActor("progress-bar") }
 
     override fun create() {
         super.create()
@@ -54,7 +54,7 @@ class LoadingScreen(game: BreakoutGame) : StageScreenBase(game) {
     }
 
     private fun setupProgressBarLabelAnimation() {
-        stage.root.findActor<Label>("progress-bar-label")?.addAction(
+        findActor<Label>("progress-bar-label").addAction(
             forever(textSequence(.8f, "Loading.", "Loading..", "Loading..."))
         )
     }

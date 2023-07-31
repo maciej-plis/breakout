@@ -1,7 +1,9 @@
 package com.matthias.breakout.screen
 
 import com.badlogic.gdx.InputProcessor
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.utils.GdxRuntimeException
 import com.matthias.breakout.BreakoutGame
 import ktx.collections.gdxArrayOf
 
@@ -25,4 +27,6 @@ abstract class StageScreenBase(game: BreakoutGame) : ScreenBase(game) {
         super.dispose()
         stage.dispose()
     }
+
+    fun <T : Actor> findActor(name: String): T = stage.root.findActor(name) ?: throw GdxRuntimeException("Actor with name '$name' was not found")
 }
