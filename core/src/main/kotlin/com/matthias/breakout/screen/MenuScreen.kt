@@ -76,6 +76,6 @@ class MenuScreen(game: BreakoutGame) : StageScreenBase(game) {
     }
 
     private fun proceedToGameScreen() {
-        game.screenManager.pushScreen<GameScreen>()
+        game.pushScreen<GameScreen>()
     }
 }

@@ -60,7 +60,7 @@ class LoadingScreen(game: BreakoutGame) : StageScreenBase(game) {
     }
 
     private fun proceedToMenuScreen() {
-        game.screenManager.pushScreen<MenuScreen>()
+        game.pushScreen<MenuScreen>()
     }
 
     private fun updateProgressBar() {

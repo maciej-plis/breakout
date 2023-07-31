@@ -49,13 +49,13 @@ class BreakoutGame : ManagedGame<ManagedScreen, ScreenTransition>() {
 
         KtxAsync.initiate()
 
-        screenManager.addScreen(LoadingScreen(this))
-        screenManager.addScreen(MenuScreen(this))
-        screenManager.addScreen(GameScreen(this))
+        addScreen(LoadingScreen(this))
+        addScreen(MenuScreen(this))
+        addScreen(GameScreen(this))
 
-        screenManager.addScreenTransition(BlendingTransition(batch, 1f, pow2In))
+        addScreenTransition(BlendingTransition(batch, 1f, pow2In))
 
-        screenManager.pushScreen<LoadingScreen>()
+        pushScreen<LoadingScreen>()
     }
 
     override fun dispose() {
