@@ -19,6 +19,7 @@ libGDX-box2d = { group = "com.badlogicgames.gdx", name = "gdx-box2d", version.re
 libGDX-box2d-platform = { group = "com.badlogicgames.gdx", name = "gdx-box2d-platform", version.ref = "libGDX" }
 libKTX-app = { group = "io.github.libktx", name = "ktx-app", version.ref = "libKTX" }
 libKTX-log = { group = "io.github.libktx", name = "ktx-log", version.ref = "libKTX" }
+libKTX-math = { group = "io.github.libktx", name = "ktx-math", version.ref = "libKTX" }
 libKTX-graphics = { group = "io.github.libktx", name = "ktx-graphics", version.ref = "libKTX" }
 libKTX-assets = { group = "io.github.libktx", name = "ktx-assets", version.ref = "libKTX" }
 libKTX-ashley = { group = "io.github.libktx", name = "ktx-ashley", version.ref = "libKTX" }
@@ -36,7 +37,7 @@ ashley = { group = "com.github.raeleus.TenPatch", name = "tenpatch", version.ref
 screenManager = { group = "com.github.crykn", name = "libgdx-screenmanager", version.ref = "screenManager" }
 
 [bundles]
-libKTX = ["libKTX-app", "libKTX-log", "libKTX-graphics", "libKTX-assets", "libKTX-ashley", "libKTX-collections", "libKTX-assets-async", "libKTX-preferences", "libKTX-style", "libKTX-scene2d", "libKTX-actors", "libKTX-box2d"]
+libKTX = ["libKTX-app", "libKTX-log", "libKTX-math", "libKTX-graphics", "libKTX-assets", "libKTX-ashley", "libKTX-collections", "libKTX-assets-async", "libKTX-preferences", "libKTX-style", "libKTX-scene2d", "libKTX-actors", "libKTX-box2d"]
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

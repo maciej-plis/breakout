@@ -22,6 +22,8 @@ class BallAngleBoundarySystem : IteratingSystem(allOf(BallComponent::class, Body
         val ball = bodyC.body
         val angle = ball.angle * radiansToDegrees
 
+        ball.linearVelocity = velocityOnAngle(ballC.velocity, ball.angle)
+
         val correctedAngle = when {
             angle >= 0f && angle < 30f -> 30f
             angle <= 0f && angle > -30f -> -30f

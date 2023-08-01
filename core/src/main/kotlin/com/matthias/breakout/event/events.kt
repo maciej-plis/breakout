@@ -32,8 +32,15 @@ class GameEventManager<T> {
 
     val eventQueue = HashSet<T>()
 
-    inline fun <reified U : T> forEventsOfType(block: (U) -> Unit) {
+    inline fun <reified U : T> forEachEventOfType(block: (U) -> Unit) {
         eventQueue.filterIsInstance<U>().forEach { block(it) }
+    }
+
+    inline fun <reified U : T> getEventsOfType(): List<U> = eventQueue.filterIsInstance<U>()
+
+    inline fun <reified U : T> forEventsOfType(block: (List<U>) -> Unit) {
+        val events = getEventsOfType<U>()
+        if (events.isNotEmpty()) block(events)
     }
 
     inline fun <reified U : T> forFirstEventOfType(block: (U) -> Unit) {

@@ -15,15 +15,17 @@ import ktx.log.logger
 
 private val LOG = logger<PaddleBounceSystem>()
 
+/**
+ * **update**: for each event of type [BallPaddleHit] reflect ball angle
+ */
 class PaddleBounceSystem(private val eventManager: GameEventManager<GameEvent>) : EntitySystem() {
 
     override fun update(delta: Float) {
-        eventManager.forEventsOfType<BallPaddleHit> { event ->
+        eventManager.forEachEventOfType<BallPaddleHit> { event ->
             val bodyC = event.ballEntity[BodyComponent.mapper]!!
             val ballC = event.ballEntity[BallComponent.mapper]!!
 
             val paddleTransformC = event.paddleEntity[TransformComponent.mapper]!!
-
             val paddleContactPoint = event.paddleContactPoint
 
             val percent = paddleContactPoint.x / paddleTransformC.size.halfWidth
