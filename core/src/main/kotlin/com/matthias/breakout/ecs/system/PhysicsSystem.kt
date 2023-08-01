@@ -8,8 +8,23 @@ import com.matthias.breakout.ecs.component.BodyComponent
 import com.matthias.breakout.ecs.component.TransformComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
+import ktx.log.logger
 
-class PhysicsSystem(private val world: World) : IteratingSystem(allOf(BodyComponent::class, TransformComponent::class).get()) {
+private val LOG = logger<PhysicsSystem>()
+
+private const val VELOCITY_ITERATIONS = 8
+private const val POSITION_ITERATIONS = 3
+
+private val family = allOf(BodyComponent::class, TransformComponent::class).get()
+
+/**
+ * **Family**: allOf([BodyComponent], [TransformComponent])
+ *
+ * **update**: Run physics step
+ *
+ * **processEntity**: Map body properties to transform component
+ */
+class PhysicsSystem(private val world: World) : IteratingSystem(family) {
 
     override fun update(delta: Float) {
         world.step(delta, VELOCITY_ITERATIONS, POSITION_ITERATIONS)
@@ -22,10 +37,5 @@ class PhysicsSystem(private val world: World) : IteratingSystem(allOf(BodyCompon
 
         transformC.position.set(bodyC.body.position, transformC.position.z)
         transformC.rotationDeg = bodyC.body.angle * radiansToDegrees
-    }
-
-    companion object {
-        private const val VELOCITY_ITERATIONS = 8
-        private const val POSITION_ITERATIONS = 3
     }
 }
