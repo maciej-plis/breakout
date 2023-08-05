@@ -1,0 +1,29 @@
+breakout.png
+	size: 1024, 64
+	repeat: none
+ball
+	bounds: 229, 4, 21, 21
+block-1
+	bounds: 343, 19, 80, 32
+block-2
+	bounds: 671, 19, 80, 32
+block-3
+	bounds: 507, 19, 80, 32
+block-4
+	bounds: 261, 19, 80, 32
+block-5
+	bounds: 589, 19, 80, 32
+block-6
+	bounds: 425, 19, 80, 32
+block-7
+	bounds: 753, 19, 80, 32
+paddle-l
+	bounds: 1, 1, 128, 24
+paddle-m
+	bounds: 147, 27, 112, 24
+paddle-s
+	bounds: 131, 1, 96, 24
+paddle-xl
+	bounds: 1, 27, 144, 24
+paddle-xs
+	bounds: 835, 27, 80, 24

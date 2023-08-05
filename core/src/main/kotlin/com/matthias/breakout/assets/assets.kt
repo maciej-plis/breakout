@@ -18,7 +18,8 @@ enum class AtlasAsset(
     val descriptor: AssetDescriptor<TextureAtlas> = AssetDescriptor("$directory/$fileName")
 ) {
     LOADING_ATLAS("loading.atlas"),
-    MENU_ATLAS("menu.atlas")
+    MENU_ATLAS("menu.atlas"),
+    BREAKOUT_ATLAS("breakout.atlas"),
 }
 
 enum class BitmapFontAsset(

@@ -25,8 +25,8 @@ import ktx.log.logger
 
 private val LOG = logger<BreakoutGame>()
 
-private const val V_WIDTH = 18f
-private const val V_HEIGHT = 32f
+private const val V_WIDTH = 48f
+private const val V_HEIGHT = 36f
 const val PPM = 16f
 
 class BreakoutGame : ManagedGame<ManagedScreen, ScreenTransition>() {

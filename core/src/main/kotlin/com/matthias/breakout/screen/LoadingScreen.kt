@@ -5,8 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions.forever
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.matthias.breakout.BreakoutGame
-import com.matthias.breakout.assets.AtlasAsset.LOADING_ATLAS
-import com.matthias.breakout.assets.AtlasAsset.MENU_ATLAS
+import com.matthias.breakout.assets.AtlasAsset.*
 import com.matthias.breakout.assets.SkinAsset.LOADING_SKIN
 import com.matthias.breakout.assets.SkinAsset.MENU_SKIN
 import com.matthias.breakout.assets.loadAsync
@@ -21,7 +20,7 @@ import ktx.log.logger
 private val LOG = logger<LoadingScreen>()
 
 private val LOADING_SCREEN_ASSETS = listOf(LOADING_ATLAS.descriptor, LOADING_SKIN.descriptor)
-private val REQUIRED_GAME_ASSETS = listOf(MENU_ATLAS.descriptor, MENU_SKIN.descriptor)
+private val REQUIRED_GAME_ASSETS = listOf(MENU_ATLAS.descriptor, MENU_SKIN.descriptor, BREAKOUT_ATLAS.descriptor)
 
 class LoadingScreen(game: BreakoutGame) : StageScreenBase(game) {
 
