@@ -2,15 +2,14 @@ package com.matthias.breakout.screen
 
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.MathUtils.degreesToRadians
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
 import com.badlogic.gdx.physics.box2d.World
-import com.badlogic.gdx.utils.GdxRuntimeException
 import com.matthias.breakout.BreakoutGame
 import com.matthias.breakout.assets.AtlasAsset.BREAKOUT_ATLAS
-import com.matthias.breakout.common.half
+import com.matthias.breakout.assets.TiledMapAsset.LEVEL_1
+import com.matthias.breakout.common.get
 import com.matthias.breakout.common.toMeters
 import com.matthias.breakout.contact.*
 import com.matthias.breakout.ecs.component.*
@@ -24,6 +23,7 @@ import ktx.box2d.body
 import ktx.box2d.box
 import ktx.box2d.circle
 import ktx.log.logger
+import ktx.tiled.*
 import kotlin.experimental.inv
 
 private val LOG = logger<GameScreen>()
@@ -55,7 +55,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
             addSystem(DebugSystem { createBall() })
             addSystem(RemoveSystem(world))
             addSystem(PhysicsSyncSystem())
-//            addSystem(PhysicsDebugRenderingSystem(world, camera))
+            addSystem(PhysicsDebugRenderingSystem(world, camera))
             addSystem(RenderSystem(batch, viewport))
         }
     }
@@ -193,43 +193,32 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
     }
 
     private fun createBlocks() {
-        val blocksPerLine = 10
-        val blockRows = 7
-        val spacing = 0.5f.toMeters()
-        val lineSpace = (camera.viewportWidth - 2f.toMeters()) - (spacing * (blocksPerLine + 1))
-
-//        val blockWidth = lineSpace / blocksPerLine
-        val blockWidth = 5f.toMeters()
-        val blockHeight = 2f.toMeters()
-
         val atlas = assets[BREAKOUT_ATLAS.descriptor]
+        val level1 = assets[LEVEL_1.descriptor]
 
-        val blockPos = Vector2(1f.toMeters() + (spacing + blockWidth.half), camera.viewportHeight - 1f.toMeters() + (-spacing - blockHeight.half))
-        for (i in 1..blockRows) {
-            val texture = atlas["block-$i"]
-            for (j in 1..blocksPerLine - 2) {
-                engine.entity {
-                    with<BlockComponent>()
-                    with<GraphicComponent>().apply { setSpriteRegion(texture) }
-                    with<TransformComponent> {
-                        setInitialPosition(blockPos.x, blockPos.y, 1f)
-                        size.set(blockWidth, blockHeight)
-                    }
-                    entity += BodyComponent(
-                        world.body {
-                            position.set(blockPos.x, blockPos.y)
-                            box(blockWidth, blockHeight) {
-                                filter.categoryBits = BLOCK_BIT
-                            }
-                            userData = entity
-                        }
-                    )
+        level1.forEachMapObject("blocks") {
+            val texture = atlas[it.property("texture")]
+            val width = it.width.toMeters().toMeters()
+            val height = it.height.toMeters().toMeters()
+            val x = it.x.toMeters().toMeters() + width / 2
+            val y = it.y.toMeters().toMeters() + height / 2
+            engine.entity {
+                with<BlockComponent>()
+                with<GraphicComponent>().apply { setSpriteRegion(texture) }
+                with<TransformComponent> {
+                    setInitialPosition(x, y, 1f)
+                    size.set(width, height)
                 }
-                blockPos.set(blockPos.x + blockWidth + spacing, blockPos.y)
+                entity += BodyComponent(
+                    world.body {
+                        position.set(x, y)
+                        box(width, height) {
+                            filter.categoryBits = BLOCK_BIT
+                        }
+                        userData = entity
+                    }
+                )
             }
-            blockPos.set(1f.toMeters() + (spacing + blockWidth.half), blockPos.y - blockHeight - spacing)
         }
     }
 }
-
-private operator fun TextureAtlas.get(name: String) = findRegion(name) ?: throw GdxRuntimeException("Region '$name' not found in atlas")

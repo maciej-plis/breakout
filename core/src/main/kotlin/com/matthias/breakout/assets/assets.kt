@@ -6,11 +6,20 @@ import com.badlogic.gdx.assets.loaders.BitmapFontLoader.BitmapFontParameter
 import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.matthias.breakout.assets.AtlasAsset.LOADING_ATLAS
 import com.matthias.breakout.assets.AtlasAsset.MENU_ATLAS
 import ktx.assets.async.AssetStorage
 
+
+enum class TiledMapAsset(
+    fileName: String,
+    directory: String = "tiled-map",
+    val descriptor: AssetDescriptor<TiledMap> = AssetDescriptor("$directory/$fileName")
+) {
+    LEVEL_1("level-1.tmx")
+}
 
 enum class AtlasAsset(
     fileName: String,

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-up" width="48" height="36" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="313">
+ <objectgroup id="9" name="blocks">
+  <object id="53" x="36" y="36" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-1"/>
+   </properties>
+  </object>
+  <object id="93" x="124" y="36" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-1"/>
+   </properties>
+  </object>
+  <object id="94" x="212" y="36" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-1"/>
+   </properties>
+  </object>
+  <object id="95" x="300" y="36" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-1"/>
+   </properties>
+  </object>
+  <object id="96" x="388" y="36" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-1"/>
+   </properties>
+  </object>
+  <object id="97" x="476" y="36" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-1"/>
+   </properties>
+  </object>
+  <object id="98" x="564" y="36" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-1"/>
+   </properties>
+  </object>
+  <object id="99" x="652" y="36" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-1"/>
+   </properties>
+  </object>
+  <object id="207" x="36" y="76" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-2"/>
+   </properties>
+  </object>
+  <object id="208" x="124" y="76" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-2"/>
+   </properties>
+  </object>
+  <object id="209" x="212" y="76" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-2"/>
+   </properties>
+  </object>
+  <object id="210" x="300" y="76" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-2"/>
+   </properties>
+  </object>
+  <object id="211" x="388" y="76" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-2"/>
+   </properties>
+  </object>
+  <object id="212" x="476" y="76" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-2"/>
+   </properties>
+  </object>
+  <object id="213" x="564" y="76" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-2"/>
+   </properties>
+  </object>
+  <object id="214" x="652" y="76" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-2"/>
+   </properties>
+  </object>
+  <object id="215" x="36" y="116" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-3"/>
+   </properties>
+  </object>
+  <object id="216" x="124" y="116" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-3"/>
+   </properties>
+  </object>
+  <object id="217" x="212" y="116" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-3"/>
+   </properties>
+  </object>
+  <object id="218" x="300" y="116" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-3"/>
+   </properties>
+  </object>
+  <object id="219" x="388" y="116" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-3"/>
+   </properties>
+  </object>
+  <object id="220" x="476" y="116" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-3"/>
+   </properties>
+  </object>
+  <object id="221" x="564" y="116" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-3"/>
+   </properties>
+  </object>
+  <object id="222" x="652" y="116" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-3"/>
+   </properties>
+  </object>
+  <object id="223" x="36" y="156" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-4"/>
+   </properties>
+  </object>
+  <object id="224" x="124" y="156" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-4"/>
+   </properties>
+  </object>
+  <object id="225" x="212" y="156" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-4"/>
+   </properties>
+  </object>
+  <object id="226" x="300" y="156" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-4"/>
+   </properties>
+  </object>
+  <object id="227" x="388" y="156" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-4"/>
+   </properties>
+  </object>
+  <object id="228" x="476" y="156" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-4"/>
+   </properties>
+  </object>
+  <object id="229" x="564" y="156" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-4"/>
+   </properties>
+  </object>
+  <object id="230" x="652" y="156" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-4"/>
+   </properties>
+  </object>
+  <object id="231" x="36" y="196" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-5"/>
+   </properties>
+  </object>
+  <object id="232" x="124" y="196" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-5"/>
+   </properties>
+  </object>
+  <object id="233" x="212" y="196" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-5"/>
+   </properties>
+  </object>
+  <object id="234" x="300" y="196" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-5"/>
+   </properties>
+  </object>
+  <object id="235" x="388" y="196" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-5"/>
+   </properties>
+  </object>
+  <object id="236" x="476" y="196" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-5"/>
+   </properties>
+  </object>
+  <object id="237" x="564" y="196" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-5"/>
+   </properties>
+  </object>
+  <object id="238" x="652" y="196" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-5"/>
+   </properties>
+  </object>
+  <object id="239" x="36" y="236" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-6"/>
+   </properties>
+  </object>
+  <object id="240" x="124" y="236" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-6"/>
+   </properties>
+  </object>
+  <object id="241" x="212" y="236" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-6"/>
+   </properties>
+  </object>
+  <object id="242" x="300" y="236" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-6"/>
+   </properties>
+  </object>
+  <object id="243" x="388" y="236" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-6"/>
+   </properties>
+  </object>
+  <object id="244" x="476" y="236" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-6"/>
+   </properties>
+  </object>
+  <object id="245" x="564" y="236" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-6"/>
+   </properties>
+  </object>
+  <object id="246" x="652" y="236" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-6"/>
+   </properties>
+  </object>
+  <object id="247" x="36" y="276" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-7"/>
+   </properties>
+  </object>
+  <object id="248" x="124" y="276" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-7"/>
+   </properties>
+  </object>
+  <object id="249" x="212" y="276" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-7"/>
+   </properties>
+  </object>
+  <object id="250" x="300" y="276" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-7"/>
+   </properties>
+  </object>
+  <object id="251" x="388" y="276" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-7"/>
+   </properties>
+  </object>
+  <object id="252" x="476" y="276" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-7"/>
+   </properties>
+  </object>
+  <object id="253" x="564" y="276" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-7"/>
+   </properties>
+  </object>
+  <object id="254" x="652" y="276" width="80" height="32">
+   <properties>
+    <property name="texture" value="block-7"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

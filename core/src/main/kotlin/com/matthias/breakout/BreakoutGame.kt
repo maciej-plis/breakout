@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.math.Interpolation.pow2In
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.ScreenViewport
@@ -37,7 +38,11 @@ class BreakoutGame : ManagedGame<ManagedScreen, ScreenTransition>() {
 
     val stageBuilder = SceneComposerStageBuilder()
 
-    val assets: AssetStorage by lazy { AssetStorage() }
+    val assets: AssetStorage by lazy {
+        AssetStorage().apply {
+            setLoader { TmxMapLoader() }
+        }
+    }
 
     val batch by lazy { SpriteBatch() }
 
@@ -53,7 +58,7 @@ class BreakoutGame : ManagedGame<ManagedScreen, ScreenTransition>() {
         addScreen(MenuScreen(this))
         addScreen(GameScreen(this))
 
-        addScreenTransition(BlendingTransition(batch, 1f, pow2In))
+        addScreenTransition(BlendingTransition(batch, 0.15f, pow2In))
 
         pushScreen<LoadingScreen>()
     }

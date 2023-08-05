@@ -1,5 +1,6 @@
 package com.matthias.breakout.common
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.MathUtils.cos
 import com.badlogic.gdx.math.MathUtils.sin
 import com.badlogic.gdx.math.Vector2
@@ -8,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.utils.GdxRuntimeException
 import com.matthias.breakout.PPM
 import ktx.math.div
 
@@ -46,3 +48,5 @@ inline fun <T : Actor> T.onMove(crossinline listener: T.() -> Boolean?): InputLi
 }
 
 fun List<Vector2>.average() = fold(Vector2()) { acc, vector -> acc.add(vector) }.div(size)
+
+operator fun TextureAtlas.get(name: String) = findRegion(name) ?: throw GdxRuntimeException("Region '$name' not found in atlas")

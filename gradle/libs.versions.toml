@@ -30,6 +30,7 @@ libKTX-style = { group = "io.github.libktx", name = "ktx-style", version.ref = "
 libKTX-scene2d = { group = "io.github.libktx", name = "ktx-scene2d", version.ref = "libKTX" }
 libKTX-actors = { group = "io.github.libktx", name = "ktx-actors", version.ref = "libKTX" }
 libKTX-box2d = { group = "io.github.libktx", name = "ktx-box2d", version.ref = "libKTX" }
+libKTX-tiled = { group = "io.github.libktx", name = "ktx-tiled", version.ref = "libKTX" }
 scene2DUtils = { group = "de.golfgl.gdxcontrollerutils", name = "gdx-controllerutils-scene2d", version.ref = "scene2DUtils" }
 stripe = { group = "com.github.raeleus.stripe", name = "stripe", version.ref = "stripe" }
 tenPatch = { group = "com.github.raeleus.TenPatch", name = "tenpatch", version.ref = "tenPatch" }
@@ -37,7 +38,7 @@ ashley = { group = "com.github.raeleus.TenPatch", name = "tenpatch", version.ref
 screenManager = { group = "com.github.crykn", name = "libgdx-screenmanager", version.ref = "screenManager" }
 
 [bundles]
-libKTX = ["libKTX-app", "libKTX-log", "libKTX-math", "libKTX-graphics", "libKTX-assets", "libKTX-ashley", "libKTX-collections", "libKTX-assets-async", "libKTX-preferences", "libKTX-style", "libKTX-scene2d", "libKTX-actors", "libKTX-box2d"]
+libKTX = ["libKTX-app", "libKTX-log", "libKTX-math", "libKTX-graphics", "libKTX-assets", "libKTX-ashley", "libKTX-collections", "libKTX-assets-async", "libKTX-preferences", "libKTX-style", "libKTX-scene2d", "libKTX-actors", "libKTX-box2d", "libKTX-tiled"]
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
