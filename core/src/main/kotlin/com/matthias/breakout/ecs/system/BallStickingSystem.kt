@@ -10,7 +10,6 @@ import com.matthias.breakout.common.halfWidth
 import com.matthias.breakout.common.velocityOnAngle
 import com.matthias.breakout.ecs.component.*
 import ktx.ashley.allOf
-import ktx.ashley.get
 import ktx.ashley.remove
 import ktx.log.logger
 
@@ -21,9 +20,9 @@ private val family = allOf(BallComponent::class, BodyComponent::class, StickyCom
 class BallStickingSystem : IteratingSystem(family) {
 
     override fun processEntity(entity: Entity, delta: Float) {
-        val bodyC = entity[BodyComponent.mapper]!!
-        val ballC = entity[BallComponent.mapper]!!
-        val attachC = entity[AttachComponent.mapper]!!
+        val bodyC = entity[BodyComponent::class]!!
+        val ballC = entity[BallComponent::class]!!
+        val attachC = entity[AttachComponent::class]!!
         val body = bodyC.body
 
         if (Gdx.input.isButtonPressed(LEFT)) {
@@ -31,7 +30,7 @@ class BallStickingSystem : IteratingSystem(family) {
             entity.remove<StickyComponent>()
 
             val paddleContactPoint = attachC.offset
-            val paddleTransformC = attachC.attachedToEntity!![TransformComponent.mapper]!!
+            val paddleTransformC = attachC.attachedToEntity!![TransformComponent::class]!!
 
             val percent = paddleContactPoint.x / paddleTransformC.size.halfWidth
             val angle = ((-60 * percent) + 90)

@@ -12,7 +12,6 @@ import com.matthias.breakout.event.GameEvent.BallBlockHit
 import com.matthias.breakout.event.GameEventManager
 import ktx.ashley.allOf
 import ktx.ashley.exclude
-import ktx.ashley.get
 import ktx.log.logger
 import kotlin.math.absoluteValue
 import kotlin.math.sign
@@ -30,8 +29,8 @@ class BlockBounceSystem(private val eventManager: GameEventManager<GameEvent>) :
             .filter { blockFamily.matches(it.blockEntity) }
             .groupBy { it.ballEntity }
             .forEach { (ballEntity, events) ->
-                val ballC = ballEntity[BallComponent.mapper]!!
-                val bodyC = ballEntity[BodyComponent.mapper]!!
+                val ballC = ballEntity[BallComponent::class]!!
+                val bodyC = ballEntity[BodyComponent::class]!!
 
                 val ballVelocity = events.first().ballContactVelocity
                 val avgNormal = events.map { it.contactNormal }.average()

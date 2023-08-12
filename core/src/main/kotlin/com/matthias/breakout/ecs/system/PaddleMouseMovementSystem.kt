@@ -8,8 +8,8 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.matthias.breakout.ecs.component.BodyComponent
 import com.matthias.breakout.ecs.component.PaddleComponent
+import com.matthias.breakout.ecs.component.get
 import ktx.ashley.allOf
-import ktx.ashley.get
 
 class PaddleMouseMovementSystem(
     private val camera: Camera
@@ -18,7 +18,7 @@ class PaddleMouseMovementSystem(
     private var lastMousePos = getMousePos()
 
     override fun processEntity(entity: Entity, delta: Float) {
-        val bodyC = entity[BodyComponent.mapper]!!
+        val bodyC = entity[BodyComponent::class]!!
 
         val paddle = bodyC.body
         val mousePos = getMousePos()

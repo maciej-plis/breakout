@@ -8,8 +8,8 @@ import com.matthias.breakout.common.y
 import com.matthias.breakout.ecs.component.BodyComponent
 import com.matthias.breakout.ecs.component.PaddleComponent
 import com.matthias.breakout.ecs.component.TransformComponent
+import com.matthias.breakout.ecs.component.get
 import ktx.ashley.allOf
-import ktx.ashley.get
 
 class PaddleBoundarySystem(
     private val leftBoundary: Float,
@@ -17,8 +17,8 @@ class PaddleBoundarySystem(
 ) : IteratingSystem(allOf(PaddleComponent::class, TransformComponent::class, BodyComponent::class).get()) {
 
     override fun processEntity(entity: Entity, delta: Float) {
-        val bodyC = entity[BodyComponent.mapper]!!
-        val transformC = entity[TransformComponent.mapper]!!
+        val bodyC = entity[BodyComponent::class]!!
+        val transformC = entity[TransformComponent::class]!!
 
         val paddle = bodyC.body
         val halfWidth = transformC.size.halfWidth

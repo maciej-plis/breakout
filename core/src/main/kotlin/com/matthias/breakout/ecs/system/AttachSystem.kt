@@ -7,19 +7,19 @@ import com.matthias.breakout.common.x
 import com.matthias.breakout.common.y
 import com.matthias.breakout.ecs.component.AttachComponent
 import com.matthias.breakout.ecs.component.BodyComponent
+import com.matthias.breakout.ecs.component.get
 import ktx.ashley.allOf
-import ktx.ashley.get
 
 private val family = allOf(AttachComponent::class, BodyComponent::class).get()
 
 class AttachSystem : IteratingSystem(family) {
 
     override fun processEntity(entity: Entity, delta: Float) {
-        val attachC = entity[AttachComponent.mapper]!!
-        val bodyC = entity[BodyComponent.mapper]!!
+        val attachC = entity[AttachComponent::class]!!
+        val bodyC = entity[BodyComponent::class]!!
 
         val body = bodyC.body
-        val attachedToBody = attachC.attachedToEntity!![BodyComponent.mapper]!!.body
+        val attachedToBody = attachC.attachedToEntity!![BodyComponent::class]!!.body
 
         val position = Vector2(attachedToBody.x + attachC.offset.x, attachedToBody.y + attachC.offset.y)
 

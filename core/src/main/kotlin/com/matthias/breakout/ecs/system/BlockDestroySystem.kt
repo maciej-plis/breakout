@@ -1,16 +1,12 @@
 package com.matthias.breakout.ecs.system
 
 import com.badlogic.ashley.core.EntitySystem
-import com.matthias.breakout.ecs.component.BallComponent
-import com.matthias.breakout.ecs.component.BlockComponent
-import com.matthias.breakout.ecs.component.RemoveComponent
-import com.matthias.breakout.ecs.component.StickyComponent
+import com.matthias.breakout.ecs.component.*
 import com.matthias.breakout.event.GameEvent
 import com.matthias.breakout.event.GameEvent.BallBlockHit
 import com.matthias.breakout.event.GameEventManager
 import ktx.ashley.allOf
 import ktx.ashley.exclude
-import ktx.ashley.get
 import ktx.ashley.plusAssign
 import ktx.log.logger
 
@@ -26,7 +22,7 @@ class BlockDestroySystem(private val eventManager: GameEventManager<GameEvent>) 
             .filter { ballFamily.matches(it.ballEntity) }
             .filter { blockFamily.matches(it.blockEntity) }
             .forEach { event ->
-                val blockC = event.blockEntity[BlockComponent.mapper]!!
+                val blockC = event.blockEntity[BlockComponent::class]!!
 
                 if (--blockC.lives == 0) {
                     LOG.debug { "Block destroyed" }

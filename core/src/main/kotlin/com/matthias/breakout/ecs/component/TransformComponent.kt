@@ -3,7 +3,6 @@ package com.matthias.breakout.ecs.component
 import com.badlogic.ashley.core.Component
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
-import ktx.ashley.mapperFor
 
 class TransformComponent : Component, Comparable<TransformComponent> {
 
@@ -25,9 +24,5 @@ class TransformComponent : Component, Comparable<TransformComponent> {
     override fun compareTo(other: TransformComponent): Int {
         val zDiff = position.z.compareTo(other.position.z)
         return if (zDiff != 0) zDiff else position.y.compareTo(other.position.y)
-    }
-
-    companion object {
-        val mapper = mapperFor<TransformComponent>()
     }
 }

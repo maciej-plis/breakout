@@ -13,7 +13,6 @@ import com.matthias.breakout.event.GameEvent.BallPaddleHit
 import com.matthias.breakout.event.GameEventManager
 import ktx.ashley.allOf
 import ktx.ashley.exclude
-import ktx.ashley.get
 import ktx.ashley.plusAssign
 import ktx.log.logger
 
@@ -39,11 +38,11 @@ class PaddleStickingSystem(private val eventManager: GameEventManager<GameEvent>
     }
 
     private fun calculateOffset(entity1: Entity, entity2: Entity): Vector2 {
-        val body1 = entity1[BodyComponent.mapper]!!.body
-        val transform1 = entity1[TransformComponent.mapper]!!
+        val body1 = entity1[BodyComponent::class]!!.body
+        val transform1 = entity1[TransformComponent::class]!!
 
-        val body2 = entity2[BodyComponent.mapper]!!.body
-        val transform2 = entity2[TransformComponent.mapper]!!
+        val body2 = entity2[BodyComponent::class]!!.body
+        val transform2 = entity2[TransformComponent::class]!!
 
         val x = clamp(body1.x, body2.x - transform2.size.halfWidth + transform1.size.halfWidth, body2.x + transform2.size.halfWidth - transform1.size.halfWidth)
 

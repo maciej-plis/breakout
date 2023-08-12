@@ -10,7 +10,6 @@ import com.matthias.breakout.event.GameEvent.BallWallHit
 import com.matthias.breakout.event.GameEventManager
 import ktx.ashley.allOf
 import ktx.ashley.exclude
-import ktx.ashley.get
 import ktx.log.logger
 
 private val LOG = logger<WallBounceSystem>()
@@ -25,8 +24,8 @@ class WallBounceSystem(private val eventManager: GameEventManager<GameEvent>) : 
             .filter { ballFamily.matches(it.ballEntity) }
             .filter { wallFamily.matches(it.wallEntity) }
             .forEach { event ->
-                val ballC = event.ballEntity[BallComponent.mapper]!!
-                val bodyC = event.ballEntity[BodyComponent.mapper]!!
+                val ballC = event.ballEntity[BallComponent::class]!!
+                val bodyC = event.ballEntity[BodyComponent::class]!!
 
                 val reflectedAngle = event.ballContactVelocity.reflect(event.contactNormal).angleRad()
 

@@ -10,7 +10,6 @@ import com.matthias.breakout.event.GameEvent.BallPaddleHit
 import com.matthias.breakout.event.GameEventManager
 import ktx.ashley.allOf
 import ktx.ashley.exclude
-import ktx.ashley.get
 import ktx.log.logger
 
 private val LOG = logger<PaddleBounceSystem>()
@@ -28,10 +27,10 @@ class PaddleBounceSystem(private val eventManager: GameEventManager<GameEvent>) 
             .filter { ballFamily.matches(it.ballEntity) }
             .filter { paddleFamily.matches(it.paddleEntity) }
             .forEach { event ->
-                val bodyC = event.ballEntity[BodyComponent.mapper]!!
-                val ballC = event.ballEntity[BallComponent.mapper]!!
+                val bodyC = event.ballEntity[BodyComponent::class]!!
+                val ballC = event.ballEntity[BallComponent::class]!!
 
-                val paddleTransformC = event.paddleEntity[TransformComponent.mapper]!!
+                val paddleTransformC = event.paddleEntity[TransformComponent::class]!!
                 val paddleContactPoint = event.paddleContactPoint
 
                 val percent = paddleContactPoint.x / paddleTransformC.size.halfWidth
