@@ -1,8 +1,8 @@
 package com.matthias.breakout.screen
 
+import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.math.MathUtils.degreesToRadians
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
 import com.badlogic.gdx.physics.box2d.World
@@ -16,6 +16,7 @@ import com.matthias.breakout.ecs.component.*
 import com.matthias.breakout.ecs.system.*
 import com.matthias.breakout.event.GameEvent
 import com.matthias.breakout.event.GameEventManager
+import ktx.ashley.allOf
 import ktx.ashley.entity
 import ktx.ashley.plusAssign
 import ktx.ashley.with
@@ -25,6 +26,7 @@ import ktx.box2d.circle
 import ktx.log.logger
 import ktx.tiled.*
 import kotlin.experimental.inv
+import kotlin.random.Random
 
 private val LOG = logger<GameScreen>()
 
@@ -46,16 +48,19 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
             addSystem(PaddleKeyboardMovementSystem())
             addSystem(PaddleMouseMovementSystem(camera))
             addSystem(PaddleBoundarySystem(0f.toMeters(), camera.viewportWidth))
+            addSystem(AttachSystem())
+            addSystem(PaddleStickingSystem(eventManager))
+            addSystem(BallStickingSystem())
             addSystem(PaddleBounceSystem(eventManager))
             addSystem(WallBounceSystem(eventManager))
             addSystem(BlockBounceSystem(eventManager))
             addSystem(BallAngleBoundarySystem())
             addSystem(BlockDestroySystem(eventManager))
             addSystem(GameOverSystem(eventManager, 0f))
-            addSystem(DebugSystem { createBall() })
+            addSystem(DebugSystem { createBall(this.getEntitiesFor(allOf(PaddleComponent::class).get()).first()) })
             addSystem(RemoveSystem(world))
             addSystem(PhysicsSyncSystem())
-            addSystem(PhysicsDebugRenderingSystem(world, camera))
+//            addSystem(PhysicsDebugRenderingSystem(world, camera))
             addSystem(RenderSystem(batch, viewport))
         }
     }
@@ -70,8 +75,8 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
         createTopWall()
         createLeftWall()
         createRightWall()
-        createPaddle()
-        createBall()
+        val paddle = createPaddle()
+        createBall(paddle)
         createBlocks()
     }
 
@@ -82,6 +87,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
 
     private fun createTopWall() {
         engine.entity {
+            with<WallComponent>()
             with<TransformComponent> {
                 setInitialPosition(camera.viewportWidth / 2, camera.viewportHeight + 0.5f.toMeters(), 1f)
                 size.set(camera.viewportWidth, 1f.toMeters())
@@ -100,6 +106,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
 
     private fun createLeftWall() {
         engine.entity {
+            with<WallComponent>()
             with<TransformComponent> {
                 setInitialPosition((-0.5f).toMeters(), camera.viewportHeight / 2, 1f)
                 size.set(1f.toMeters(), camera.viewportHeight)
@@ -118,6 +125,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
 
     private fun createRightWall() {
         engine.entity {
+            with<WallComponent>()
             with<TransformComponent> {
                 setInitialPosition(camera.viewportWidth + 0.5f.toMeters(), camera.viewportHeight / 2, 1f)
                 size.set(1f.toMeters(), camera.viewportHeight)
@@ -134,10 +142,10 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
         }
     }
 
-    private fun createPaddle() {
+    private fun createPaddle(): Entity {
         val atlas = assets[BREAKOUT_ATLAS.descriptor]
         val texture = atlas["paddle-m"]
-        engine.entity {
+        return engine.entity {
             with<PaddleComponent> {
                 speed = 0.5f.toMeters()
             }
@@ -160,7 +168,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
         }
     }
 
-    private fun createBall() {
+    private fun createBall(paddle: Entity) {
         val atlas = assets[BREAKOUT_ATLAS.descriptor]
         val texture = atlas["ball"]
         engine.entity {
@@ -168,15 +176,21 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
                 velocity = 32f.toMeters()
             }
             with<TransformComponent> {
-                setInitialPosition(camera.viewportWidth / 2, camera.viewportHeight / 2, 1f)
+                setInitialPosition(camera.viewportWidth / 2, 10f.toMeters(), 1f)
                 size.set(1.25f, 1.25f).toMeters()
             }
             with<GraphicComponent> {
                 setSpriteRegion(texture)
             }
+            with<StickyComponent>()
+            with<AttachComponent>().apply {
+                attachedToEntity = paddle
+                val xOffset = Random.nextFloat() / 2 - 0.25f
+                offset = Vector2(xOffset.toMeters(), (1.25f + 1.5f).toMeters() / 2)
+            }
             entity += BodyComponent(
                 world.body(type = DynamicBody) {
-                    position.set(camera.viewportWidth / 2, camera.viewportHeight / 2)
+                    position.set(camera.viewportWidth / 2, 10f.toMeters())
                     circle((1.25f / 2).toMeters()) {
                         filter.categoryBits = BALL_BIT
                         filter.maskBits = BALL_BIT.inv()
@@ -185,8 +199,6 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
                     userData = entity
                     bullet = true
                     fixedRotation = true
-                    angle = -90f * degreesToRadians
-                    linearVelocity.set(0f, -16f).toMeters()
                 }
             )
         }

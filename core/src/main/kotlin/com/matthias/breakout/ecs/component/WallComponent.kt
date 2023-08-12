@@ -1,4 +1,6 @@
 package com.matthias.breakout.ecs.component
 
-class WallComponent {
+import com.badlogic.ashley.core.Component
+
+class WallComponent : Component {
 }

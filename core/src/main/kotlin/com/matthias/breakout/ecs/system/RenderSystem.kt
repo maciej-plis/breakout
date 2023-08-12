@@ -20,15 +20,15 @@ private val familyComparator = compareBy<Entity> { entity -> entity[TransformCom
 
 class RenderSystem(private val batch: Batch, private val gameViewport: Viewport) : SortedIteratingSystem(family, familyComparator) {
 
-    override fun update(deltaTime: Float) {
+    override fun update(delta: Float) {
         forceSort()
         gameViewport.apply()
         batch.use(gameViewport.camera.combined) {
-            super.update(deltaTime)
+            super.update(delta)
         }
     }
 
-    override fun processEntity(entity: Entity, deltaTime: Float) {
+    override fun processEntity(entity: Entity, delta: Float) {
         val transform = entity[TransformComponent.mapper]!!
         val graphic = entity[GraphicComponent.mapper]!!
 

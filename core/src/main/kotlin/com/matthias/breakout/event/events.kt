@@ -3,48 +3,50 @@ package com.matthias.breakout.event
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.math.Vector2
 
-sealed interface GameEvent {
+sealed class GameEvent {
 
-    object GameOverEvent : GameEvent
+    var handled = false
+
+    data object GameOverEvent : GameEvent()
 
     data class BallPaddleHit(
         val ballEntity: Entity,
         val paddleEntity: Entity,
         val paddleContactPoint: Vector2
-    ) : GameEvent
+    ) : GameEvent()
 
     data class BallWallHit(
         val ballEntity: Entity,
         val wallEntity: Entity,
         val contactNormal: Vector2,
         val ballContactVelocity: Vector2
-    ) : GameEvent
+    ) : GameEvent()
 
     data class BallBlockHit(
         val ballEntity: Entity,
         val blockEntity: Entity,
         val contactNormal: Vector2,
         val ballContactVelocity: Vector2
-    ) : GameEvent
+    ) : GameEvent()
 }
 
-class GameEventManager<T> {
+class GameEventManager<T : GameEvent> {
 
-    val eventQueue = HashSet<T>()
+    val eventQueue = ArrayList<T>()
+
+    inline fun <reified U : T> getEventsOfType(): List<U> = eventQueue
+        .filterIsInstance<U>()
+        .filter { !it.handled }
 
     inline fun <reified U : T> forEachEventOfType(block: (U) -> Unit) {
-        eventQueue.filterIsInstance<U>().forEach { block(it) }
+        getEventsOfType<U>().forEach { block(it) }
     }
-
-    inline fun <reified U : T> getEventsOfType(): List<U> = eventQueue.filterIsInstance<U>()
 
     inline fun <reified U : T> forEventsOfType(block: (List<U>) -> Unit) {
         val events = getEventsOfType<U>()
-        if (events.isNotEmpty()) block(events)
-    }
-
-    inline fun <reified U : T> forFirstEventOfType(block: (U) -> Unit) {
-        eventQueue.filterIsInstance<U>().firstOrNull()?.let { block(it) }
+        if (events.isNotEmpty()) {
+            block(events)
+        }
     }
 
     fun addEvent(event: T) {

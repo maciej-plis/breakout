@@ -7,13 +7,18 @@ import com.badlogic.gdx.math.MathUtils.radiansToDegrees
 import com.matthias.breakout.common.velocityOnAngle
 import com.matthias.breakout.ecs.component.BallComponent
 import com.matthias.breakout.ecs.component.BodyComponent
+import com.matthias.breakout.ecs.component.RemoveComponent
+import com.matthias.breakout.ecs.component.StickyComponent
 import ktx.ashley.allOf
+import ktx.ashley.exclude
 import ktx.ashley.get
 import ktx.log.logger
 
 private val LOG = logger<BallAngleBoundarySystem>()
 
-class BallAngleBoundarySystem : IteratingSystem(allOf(BallComponent::class, BodyComponent::class).get()) {
+private val family = allOf(BallComponent::class, BodyComponent::class).exclude(RemoveComponent::class, StickyComponent::class).get()
+
+class BallAngleBoundarySystem : IteratingSystem(family) {
 
     override fun processEntity(entity: Entity, delta: Float) {
         val ballC = entity[BallComponent.mapper]!!
