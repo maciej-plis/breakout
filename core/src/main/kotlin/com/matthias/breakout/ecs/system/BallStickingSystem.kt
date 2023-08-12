@@ -30,7 +30,7 @@ class BallStickingSystem : IteratingSystem(family) {
             entity.remove<StickyComponent>()
 
             val paddleContactPoint = attachC.offset
-            val paddleTransformC = attachC.attachedToEntity!![TransformComponent::class]!!
+            val paddleTransformC = attachC.targetEntity!![TransformComponent::class]!!
 
             val percent = paddleContactPoint.x / paddleTransformC.size.halfWidth
             val angle = ((-60 * percent) + 90)

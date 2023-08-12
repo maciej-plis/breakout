@@ -31,7 +31,7 @@ class PaddleStickingSystem(private val eventManager: GameEventManager<GameEvent>
             .forEach { event ->
                 event.ballEntity += StickyComponent()
                 event.ballEntity += AttachComponent().apply {
-                    attachedToEntity = event.paddleEntity
+                    targetEntity = event.paddleEntity
                     offset = calculateOffset(event.ballEntity, event.paddleEntity)
                 }
             }

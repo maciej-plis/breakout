@@ -2,28 +2,33 @@ package com.matthias.breakout.ecs.system
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
-import com.badlogic.gdx.math.Vector2
-import com.matthias.breakout.common.x
-import com.matthias.breakout.common.y
+import com.matthias.breakout.common.missingComponent
 import com.matthias.breakout.ecs.component.AttachComponent
 import com.matthias.breakout.ecs.component.BodyComponent
 import com.matthias.breakout.ecs.component.get
 import ktx.ashley.allOf
+import ktx.log.logger
 
-private val family = allOf(AttachComponent::class, BodyComponent::class).get()
+private val LOG = logger<AttachSystem>()
+private val FAMILY = allOf(AttachComponent::class, BodyComponent::class).get()
 
-class AttachSystem : IteratingSystem(family) {
+/**
+ * System responsible for keeping entity position in specified offset from another entity.
+ * Basically gluing them together.
+ *
+ * **Family**: allOf([AttachComponent], [BodyComponent])
+ */
+class AttachSystem : IteratingSystem(FAMILY) {
 
     override fun processEntity(entity: Entity, delta: Float) {
-        val attachC = entity[AttachComponent::class]!!
-        val bodyC = entity[BodyComponent::class]!!
+        val attachC = entity[AttachComponent::class] ?: return LOG.missingComponent<AttachComponent>()
+        val bodyC = entity[BodyComponent::class] ?: return LOG.missingComponent<BodyComponent>()
 
-        val body = bodyC.body
-        val attachedToBody = attachC.attachedToEntity!![BodyComponent::class]!!.body
-
-        val position = Vector2(attachedToBody.x + attachC.offset.x, attachedToBody.y + attachC.offset.y)
-
-        body.setTransform(position, body.angle)
-
+        attachC.targetEntity?.get(BodyComponent::class)?.let { targetBody ->
+            bodyC.setPosition(
+                targetBody.x + attachC.offset.x,
+                targetBody.y + attachC.offset.y
+            )
+        }
     }
 }

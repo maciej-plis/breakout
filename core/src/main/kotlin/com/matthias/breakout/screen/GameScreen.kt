@@ -89,7 +89,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
         engine.entity {
             with<WallComponent>()
             with<TransformComponent> {
-                setInitialPosition(camera.viewportWidth / 2, camera.viewportHeight + 0.5f.toMeters(), 1f)
+                this.setPosition(camera.viewportWidth / 2, camera.viewportHeight + 0.5f.toMeters())
                 size.set(camera.viewportWidth, 1f.toMeters())
             }
             entity += BodyComponent(
@@ -108,7 +108,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
         engine.entity {
             with<WallComponent>()
             with<TransformComponent> {
-                setInitialPosition((-0.5f).toMeters(), camera.viewportHeight / 2, 1f)
+                this.setPosition((-0.5f).toMeters(), camera.viewportHeight / 2)
                 size.set(1f.toMeters(), camera.viewportHeight)
             }
             entity += BodyComponent(
@@ -127,7 +127,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
         engine.entity {
             with<WallComponent>()
             with<TransformComponent> {
-                setInitialPosition(camera.viewportWidth + 0.5f.toMeters(), camera.viewportHeight / 2, 1f)
+                this.setPosition(camera.viewportWidth + 0.5f.toMeters(), camera.viewportHeight / 2)
                 size.set(1f.toMeters(), camera.viewportHeight)
             }
             entity += BodyComponent(
@@ -153,7 +153,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
                 setSpriteRegion(texture)
             }
             with<TransformComponent> {
-                setInitialPosition(camera.viewportWidth / 2, 1.5f.toMeters(), 1f)
+                this.setPosition(camera.viewportWidth / 2, 1.5f.toMeters())
                 size.set(7f.toMeters(), 1.5f.toMeters())
             }
             entity += BodyComponent(
@@ -176,7 +176,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
                 velocity = 32f.toMeters()
             }
             with<TransformComponent> {
-                setInitialPosition(camera.viewportWidth / 2, 10f.toMeters(), 1f)
+                this.setPosition(camera.viewportWidth / 2, 10f.toMeters())
                 size.set(1.25f, 1.25f).toMeters()
             }
             with<GraphicComponent> {
@@ -184,7 +184,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
             }
             with<StickyComponent>()
             with<AttachComponent>().apply {
-                attachedToEntity = paddle
+                targetEntity = paddle
                 val xOffset = Random.nextFloat() / 2 - 0.25f
                 offset = Vector2(xOffset.toMeters(), (1.25f + 1.5f).toMeters() / 2)
             }
@@ -218,7 +218,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
                 with<BlockComponent>()
                 with<GraphicComponent>().apply { setSpriteRegion(texture) }
                 with<TransformComponent> {
-                    setInitialPosition(x, y, 1f)
+                    this.setPosition(x, y)
                     size.set(width, height)
                 }
                 entity += BodyComponent(

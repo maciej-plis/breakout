@@ -26,6 +26,6 @@ class PhysicsSyncSystem : IteratingSystem(family) {
         val bodyC = entity[BodyComponent::class] ?: return LOG.missingComponent<BodyComponent>()
 
         transformC.setPosition(bodyC.x, bodyC.y)
-        transformC.angleDeg = bodyC.angle * radiansToDegrees
+        transformC.angleDeg = bodyC.angleRad * radiansToDegrees
     }
 }
