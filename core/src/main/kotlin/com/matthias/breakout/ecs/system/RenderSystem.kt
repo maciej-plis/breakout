@@ -5,7 +5,7 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.SortedIteratingSystem
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.utils.viewport.Viewport
-import com.matthias.breakout.common.half
+import com.matthias.breakout.common.missingComponent
 import com.matthias.breakout.ecs.component.GraphicComponent
 import com.matthias.breakout.ecs.component.TransformComponent
 import com.matthias.breakout.ecs.component.get
@@ -18,6 +18,12 @@ private val LOG = logger<RenderSystem>()
 private val family = allOf(TransformComponent::class, GraphicComponent::class).get()
 private val familyComparator = compareBy<Entity> { entity -> entity[TransformComponent::class] }
 
+/**
+ * System responsible for drawing entity textures.
+ * Entities are rendered in order using [TransformComponent.layer].
+ *
+ * **Family**: allOf([TransformComponent], [GraphicComponent])
+ */
 class RenderSystem(private val batch: Batch, private val gameViewport: Viewport) : SortedIteratingSystem(family, familyComparator) {
 
     override fun update(delta: Float) {
@@ -29,20 +35,13 @@ class RenderSystem(private val batch: Batch, private val gameViewport: Viewport)
     }
 
     override fun processEntity(entity: Entity, delta: Float) {
-        val transform = entity[TransformComponent::class]!!
-        val graphic = entity[GraphicComponent::class]!!
+        val transformC = entity[TransformComponent::class] ?: return LOG.missingComponent<TransformComponent>()
+        val graphicC = entity[GraphicComponent::class] ?: return LOG.missingComponent<GraphicComponent>()
 
-        if (graphic.sprite.texture == null) {
-            return LOG.error { "Entity has no texture for rendering. |$entity|" }
-        }
+        graphicC.sprite.texture ?: return LOG.error { "Entity has no texture to render." }
 
-        graphic.sprite.run {
-            setBounds(
-                transform.position.x - transform.size.x.half,
-                transform.position.y - transform.size.y.half,
-                transform.size.x,
-                transform.size.y
-            )
+        graphicC.sprite.run {
+            setBounds(transformC.bottomLeftX, transformC.bottomLeftY, transformC.width, transformC.height)
             draw(batch)
         }
     }

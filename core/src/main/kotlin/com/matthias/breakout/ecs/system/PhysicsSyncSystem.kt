@@ -3,6 +3,7 @@ package com.matthias.breakout.ecs.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.MathUtils.radiansToDegrees
+import com.matthias.breakout.common.missingComponent
 import com.matthias.breakout.ecs.component.BodyComponent
 import com.matthias.breakout.ecs.component.TransformComponent
 import com.matthias.breakout.ecs.component.get
@@ -14,17 +15,17 @@ private val LOG = logger<PhysicsSystem>()
 private val family = allOf(BodyComponent::class, TransformComponent::class).get()
 
 /**
- * **Family**: allOf([BodyComponent], [TransformComponent])
+ * System responsible for mapping box2D state from [BodyComponent] to [TransformComponent].
  *
- * **processEntity**: Map body properties to transform component
+ * **Family**: allOf([BodyComponent], [TransformComponent])
  */
 class PhysicsSyncSystem : IteratingSystem(family) {
 
     override fun processEntity(entity: Entity, delta: Float) {
-        val transformC = entity[TransformComponent::class]!!
-        val bodyC = entity[BodyComponent::class]!!
+        val transformC = entity[TransformComponent::class] ?: return LOG.missingComponent<TransformComponent>()
+        val bodyC = entity[BodyComponent::class] ?: return LOG.missingComponent<BodyComponent>()
 
-        transformC.position.set(bodyC.body.position, transformC.position.z)
-        transformC.rotationDeg = bodyC.body.angle * radiansToDegrees
+        transformC.setPosition(bodyC.x, bodyC.y)
+        transformC.angleDeg = bodyC.angle * radiansToDegrees
     }
 }
