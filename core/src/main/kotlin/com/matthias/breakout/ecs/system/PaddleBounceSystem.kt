@@ -1,9 +1,8 @@
 package com.matthias.breakout.ecs.system
 
 import com.badlogic.ashley.core.EntitySystem
-import com.badlogic.gdx.math.MathUtils.degreesToRadians
-import com.matthias.breakout.common.halfWidth
-import com.matthias.breakout.common.velocityOnAngle
+import com.badlogic.gdx.math.MathUtils.clamp
+import com.matthias.breakout.common.*
 import com.matthias.breakout.ecs.component.*
 import com.matthias.breakout.event.GameEvent
 import com.matthias.breakout.event.GameEvent.BallPaddleHit
@@ -13,34 +12,41 @@ import ktx.ashley.exclude
 import ktx.log.logger
 
 private val LOG = logger<PaddleBounceSystem>()
+private val BALL_FAMILY = allOf(BallComponent::class, BodyComponent::class).get()
+private val PADDLE_FAMILY = allOf(PaddleComponent::class).exclude(StickyComponent::class).get()
 
-private val ballFamily = allOf(BallComponent::class, BodyComponent::class).exclude(RemoveComponent::class, StickyComponent::class).get()
-private val paddleFamily = allOf(PaddleComponent::class).exclude(StickyComponent::class).get()
+private val BOUNCE_DEGREES_RANGE = 90f..150f
 
 /**
- * **update**: for each event of type [BallPaddleHit] reflect ball angle
+ * System responsible for reflecting ball on angle based on paddle contact point.
+ * It listens for events of type [BallPaddleHit].
+ *
+ * --
+ *
+ * **ballFamily**:
+ * - allOf: [[BallComponent], [BodyComponent]]
+ *
+ * **paddleFamily**:
+ * - allOf: [[PaddleComponent]]
+ * - exclude: [[StickyComponent]]
  */
 class PaddleBounceSystem(private val eventManager: GameEventManager<GameEvent>) : EntitySystem() {
 
     override fun update(delta: Float) {
         eventManager.getEventsOfType<BallPaddleHit>()
-            .filter { ballFamily.matches(it.ballEntity) }
-            .filter { paddleFamily.matches(it.paddleEntity) }
+            .filter { BALL_FAMILY.matches(it.ballEntity) }
+            .filter { PADDLE_FAMILY.matches(it.paddleEntity) }
             .forEach { event ->
-                val bodyC = event.ballEntity[BodyComponent::class]!!
-                val ballC = event.ballEntity[BallComponent::class]!!
+                val ballC = event.ballEntity[BallComponent::class] ?: return LOG.missingComponent<BallComponent>()
+                val ballBodyC = event.ballEntity[BodyComponent::class] ?: return LOG.missingComponent<BodyComponent>()
+                val paddleTransformC = event.paddleEntity[TransformComponent::class] ?: return LOG.missingComponent<TransformComponent>()
 
-                val paddleTransformC = event.paddleEntity[TransformComponent::class]!!
-                val paddleContactPoint = event.paddleContactPoint
+                val percentageFromCenter = clamp(event.paddleContactPoint.x / paddleTransformC.width.half, -1f, 1f)
+                val angle = BOUNCE_DEGREES_RANGE.byPercentage(-1 * percentageFromCenter).toRadians()
 
-                val percent = paddleContactPoint.x / paddleTransformC.size.halfWidth
-                val angle = ((-60 * percent) + 90)
-
-                LOG.debug { "Ball hit paddle, reflected on angle: $angle" }
-                bodyC.body.let { ball ->
-                    ball.linearVelocity = velocityOnAngle(ballC.velocity, angle * degreesToRadians)
-                    ball.setTransform(ball.position, ball.linearVelocity.angleRad())
-                }
+                LOG.debug { "Ball hit paddle, reflected on angle: ${angle.toDegrees()}" }
+                ballBodyC.setAngle(angle)
+                ballBodyC.setVelocity(velocityOnAngle(ballC.velocity, angle))
             }
     }
 }

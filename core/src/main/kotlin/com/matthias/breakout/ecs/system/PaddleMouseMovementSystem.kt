@@ -4,31 +4,39 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Camera
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
+import com.matthias.breakout.common.missingComponent
 import com.matthias.breakout.ecs.component.BodyComponent
 import com.matthias.breakout.ecs.component.PaddleComponent
 import com.matthias.breakout.ecs.component.get
 import ktx.ashley.allOf
+import ktx.log.logger
 
-class PaddleMouseMovementSystem(
-    private val camera: Camera
-) : IteratingSystem(allOf(PaddleComponent::class, BodyComponent::class).get()) {
+private val LOG = logger<PaddleMouseMovementSystem>()
+private val FAMILY = allOf(PaddleComponent::class, BodyComponent::class).get()
 
-    private var lastMousePos = getMousePos()
+/**
+ * System responsible for controlling paddle with mouse.
+ *
+ * --
+ *
+ * **Family**:
+ * - allOf: [[PaddleComponent], [BodyComponent]]
+ */
+class PaddleMouseMovementSystem(private val camera: Camera) : IteratingSystem(FAMILY) {
+
+    private val lastMousePosition = Vector3()
+    private val mousePosition = Vector3()
+        get() = field.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
 
     override fun processEntity(entity: Entity, delta: Float) {
-        val bodyC = entity[BodyComponent::class]!!
+        val bodyC = entity[BodyComponent::class] ?: return LOG.missingComponent<BodyComponent>()
 
-        val paddle = bodyC.body
-        val mousePos = getMousePos()
-
-        if (mousePos != lastMousePos) {
-            val coords = camera.unproject(Vector3(mousePos.x, mousePos.y, 0f))
-            paddle.setTransform(coords.x, paddle.position.y, 0f)
-            lastMousePos = mousePos
+        mousePosition.let { position ->
+            if (position == lastMousePosition) return
+            lastMousePosition.set(position)
+            val onScreenPosition = camera.unproject(position)
+            bodyC.setPosition(onScreenPosition.x, bodyC.y)
         }
     }
-
-    private fun getMousePos() = Vector2(Gdx.input.x.toFloat(), Gdx.input.y.toFloat())
 }

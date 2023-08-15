@@ -17,7 +17,10 @@ private val family = allOf(BodyComponent::class, TransformComponent::class).get(
 /**
  * System responsible for mapping box2D state from [BodyComponent] to [TransformComponent].
  *
- * **Family**: allOf([BodyComponent], [TransformComponent])
+ * --
+ *
+ * **Family**:
+ * - allOf: [[BodyComponent], [TransformComponent]]
  */
 class PhysicsSyncSystem : IteratingSystem(family) {
 

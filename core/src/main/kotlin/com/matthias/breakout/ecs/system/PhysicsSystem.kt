@@ -10,7 +10,7 @@ private const val VELOCITY_ITERATIONS = 8
 private const val POSITION_ITERATIONS = 3
 
 /**
- * **update**: Run physics step
+ * System responsible for running box2D physics iterations
  */
 class PhysicsSystem(private val world: World) : EntitySystem() {
 

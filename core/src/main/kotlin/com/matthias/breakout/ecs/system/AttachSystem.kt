@@ -16,7 +16,10 @@ private val FAMILY = allOf(AttachComponent::class, BodyComponent::class).get()
  * System responsible for keeping entity position in specified offset from another entity.
  * Basically gluing them together.
  *
- * **Family**: allOf([AttachComponent], [BodyComponent])
+ * --
+ *
+ * **Family**:
+ * - allOf: [[AttachComponent], [BodyComponent]]
  */
 class AttachSystem : IteratingSystem(FAMILY) {
 

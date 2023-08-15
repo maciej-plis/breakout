@@ -18,7 +18,10 @@ private val FAMILY = allOf(RemoveComponent::class).get()
  * When [RemoveComponent.delay] has passed entity is removed from engine.
  * Additionally, if entity contains [BodyComponent] its body will be destroyed.
  *
- * **Family**: allOf([RemoveComponent])
+ * --
+ *
+ * **Family**:
+ * - allOf: [[RemoveComponent]]
  */
 class RemoveSystem(private val world: World) : IteratingSystem(FAMILY) {
 

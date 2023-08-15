@@ -47,10 +47,10 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
             addSystem(PhysicsSystem(world))
             addSystem(PaddleKeyboardMovementSystem())
             addSystem(PaddleMouseMovementSystem(camera))
-            addSystem(PaddleBoundarySystem(0f.toMeters(), camera.viewportWidth))
+            addSystem(PaddleBoundarySystem(0f, camera.viewportWidth))
             addSystem(AttachSystem())
             addSystem(PaddleStickingSystem(eventManager))
-            addSystem(BallStickingSystem())
+            addSystem(BallReleaseSystem())
             addSystem(PaddleBounceSystem(eventManager))
             addSystem(WallBounceSystem(eventManager))
             addSystem(BlockBounceSystem(eventManager))
@@ -146,9 +146,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
         val atlas = assets[BREAKOUT_ATLAS.descriptor]
         val texture = atlas["paddle-m"]
         return engine.entity {
-            with<PaddleComponent> {
-                speed = 0.5f.toMeters()
-            }
+            with<PaddleComponent>()
             with<GraphicComponent> {
                 setSpriteRegion(texture)
             }
@@ -182,7 +180,6 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
             with<GraphicComponent> {
                 setSpriteRegion(texture)
             }
-            with<StickyComponent>()
             with<AttachComponent>().apply {
                 targetEntity = paddle
                 val xOffset = Random.nextFloat() / 2 - 0.25f

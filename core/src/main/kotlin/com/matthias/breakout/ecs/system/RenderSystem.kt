@@ -15,16 +15,19 @@ import ktx.log.logger
 
 private val LOG = logger<RenderSystem>()
 
-private val family = allOf(TransformComponent::class, GraphicComponent::class).get()
-private val familyComparator = compareBy<Entity> { entity -> entity[TransformComponent::class] }
+private val FAMILY = allOf(TransformComponent::class, GraphicComponent::class).get()
+private val FAMILY_COMPARATOR = compareBy<Entity> { entity -> entity[TransformComponent::class] }
 
 /**
  * System responsible for drawing entity textures.
  * Entities are rendered in order using [TransformComponent.layer].
  *
- * **Family**: allOf([TransformComponent], [GraphicComponent])
+ * --
+ *
+ * **Family**:
+ * - allOf: [[TransformComponent], [GraphicComponent]]
  */
-class RenderSystem(private val batch: Batch, private val gameViewport: Viewport) : SortedIteratingSystem(family, familyComparator) {
+class RenderSystem(private val batch: Batch, private val gameViewport: Viewport) : SortedIteratingSystem(FAMILY, FAMILY_COMPARATOR) {
 
     override fun update(delta: Float) {
         forceSort()

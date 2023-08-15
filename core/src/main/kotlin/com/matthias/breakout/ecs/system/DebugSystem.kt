@@ -7,6 +7,9 @@ import ktx.log.logger
 
 private val LOG = logger<DebugSystem>()
 
+/**
+ * System responsible for adding debug functionalities like spawning balls etc.
+ */
 class DebugSystem(val createBallCallback: () -> Unit) : EntitySystem() {
 
     override fun update(delta: Float) {

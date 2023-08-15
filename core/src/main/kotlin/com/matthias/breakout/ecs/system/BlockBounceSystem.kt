@@ -1,10 +1,10 @@
 package com.matthias.breakout.ecs.system
 
 import com.badlogic.ashley.core.EntitySystem
-import com.badlogic.gdx.math.MathUtils.radiansToDegrees
 import com.badlogic.gdx.math.Vector2
 import com.matthias.breakout.common.average
 import com.matthias.breakout.common.reflect
+import com.matthias.breakout.common.toDegrees
 import com.matthias.breakout.common.velocityOnAngle
 import com.matthias.breakout.ecs.component.*
 import com.matthias.breakout.event.GameEvent
@@ -18,15 +18,28 @@ import kotlin.math.sign
 
 private val LOG = logger<BlockBounceSystem>()
 
-private val ballFamily = allOf(BallComponent::class, BodyComponent::class).exclude(RemoveComponent::class, StickyComponent::class).get()
-private val blockFamily = allOf(BlockComponent::class).exclude(RemoveComponent::class).get()
+private val BALL_FAMILY = allOf(BallComponent::class, BodyComponent::class).get()
+private val BLOCK_FAMILY = allOf(BlockComponent::class).exclude(RemoveComponent::class).get()
 
+/**
+ * System responsible for reflecting ball angle based on block contact point.
+ * It listens for events of type [BallBlockHit].
+ *
+ *  --
+ *
+ * **ballFamily**:
+ * - allOf: [[BallComponent], [BodyComponent]]
+ *
+ * **blockFamily**:
+ * - allOf: [[BlockComponent]]
+ * - exclude: [[RemoveComponent]]
+ */
 class BlockBounceSystem(private val eventManager: GameEventManager<GameEvent>) : EntitySystem() {
 
     override fun update(delta: Float) {
         eventManager.getEventsOfType<BallBlockHit>()
-            .filter { ballFamily.matches(it.ballEntity) }
-            .filter { blockFamily.matches(it.blockEntity) }
+            .filter { BALL_FAMILY.matches(it.ballEntity) }
+            .filter { BLOCK_FAMILY.matches(it.blockEntity) }
             .groupBy { it.ballEntity }
             .forEach { (ballEntity, events) ->
                 val ballC = ballEntity[BallComponent::class]!!
@@ -37,11 +50,9 @@ class BlockBounceSystem(private val eventManager: GameEventManager<GameEvent>) :
                 val normal = verticalOrHorizontal(avgNormal)
                 val reflectedAngle = ballVelocity.reflect(normal).angleRad()
 
-                LOG.debug { "Ball hit block(s), reflected on angle ${reflectedAngle * radiansToDegrees}" }
-                bodyC.body.let { ball ->
-                    ball.linearVelocity = velocityOnAngle(ballC.velocity, reflectedAngle)
-                    ball.setTransform(ball.position, reflectedAngle)
-                }
+                LOG.debug { "Ball hit block(s), reflected on angle ${reflectedAngle.toDegrees()}" }
+                bodyC.setAngle(reflectedAngle)
+                bodyC.setVelocity(velocityOnAngle(ballC.velocity, reflectedAngle))
             }
     }
 

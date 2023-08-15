@@ -2,41 +2,47 @@ package com.matthias.breakout.ecs.system
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
-import com.badlogic.gdx.math.MathUtils.degreesToRadians
-import com.badlogic.gdx.math.MathUtils.radiansToDegrees
+import com.matthias.breakout.common.compareTo
+import com.matthias.breakout.common.missingComponent
+import com.matthias.breakout.common.toRadians
 import com.matthias.breakout.common.velocityOnAngle
 import com.matthias.breakout.ecs.component.*
 import ktx.ashley.allOf
 import ktx.ashley.exclude
 import ktx.log.logger
+import kotlin.math.abs
+import kotlin.math.sign
 
 private val LOG = logger<BallAngleBoundarySystem>()
+private val FAMILY = allOf(BallComponent::class, BodyComponent::class).exclude(RemoveComponent::class, StickyComponent::class).get()
 
-private val family = allOf(BallComponent::class, BodyComponent::class).exclude(RemoveComponent::class, StickyComponent::class).get()
+private val BALL_ALLOWED_DEGREES_RANGE = 30f..150f
 
-class BallAngleBoundarySystem : IteratingSystem(family) {
+/**
+ * System responsible for keeping ball angle in specified range.
+ *
+ * --
+ *
+ * **Family**:
+ * - allOf: [[BallComponent], [BodyComponent]]
+ * - exclude: [[RemoveComponent], [StickyComponent]]
+ */
+class BallAngleBoundarySystem : IteratingSystem(FAMILY) {
 
     override fun processEntity(entity: Entity, delta: Float) {
-        val ballC = entity[BallComponent::class]!!
-        val bodyC = entity[BodyComponent::class]!!
+        val ballC = entity[BallComponent::class] ?: return LOG.missingComponent<BallComponent>()
+        val bodyC = entity[BodyComponent::class] ?: return LOG.missingComponent<BodyComponent>()
 
-        val ball = bodyC.body
-        val angle = ball.angle * radiansToDegrees
-
-        ball.linearVelocity = velocityOnAngle(ballC.velocity, ball.angle)
-
+        val angle = abs(bodyC.angleDeg) % 180
+        val angleSign = bodyC.angleDeg.sign
         val correctedAngle = when {
-            angle >= 0f && angle < 30f -> 30f
-            angle <= 0f && angle > -30f -> -30f
-            angle > 150f && angle <= 180f -> 150f
-            angle < -150f && angle >= -180f -> -150f
-            else -> null
+            angle < BALL_ALLOWED_DEGREES_RANGE -> BALL_ALLOWED_DEGREES_RANGE.start * angleSign
+            angle > BALL_ALLOWED_DEGREES_RANGE -> BALL_ALLOWED_DEGREES_RANGE.endInclusive * angleSign
+            else -> return
         }
 
-        correctedAngle?.let {
-            LOG.debug { "Ball incorrect angle $angle corrected to $correctedAngle" }
-            ball.setTransform(ball.position, correctedAngle * degreesToRadians)
-            ball.linearVelocity = velocityOnAngle(ballC.velocity, correctedAngle * degreesToRadians)
-        }
+        LOG.debug { "Ball incorrect angle ${bodyC.angleDeg} corrected to $correctedAngle" }
+        bodyC.setAngle(correctedAngle.toRadians())
+        bodyC.setVelocity(velocityOnAngle(ballC.velocity, correctedAngle.toRadians()))
     }
 }

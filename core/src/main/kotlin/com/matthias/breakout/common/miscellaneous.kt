@@ -1,8 +1,7 @@
 package com.matthias.breakout.common
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
-import com.badlogic.gdx.math.MathUtils.cos
-import com.badlogic.gdx.math.MathUtils.sin
+import com.badlogic.gdx.math.MathUtils.*
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.scenes.scene2d.Actor
@@ -21,6 +20,8 @@ fun Int.toMeters() = this / PPM
 val Float.half get() = this / 2
 fun Float.toPixels() = this * PPM
 fun Float.toMeters() = this / PPM
+fun Float.toRadians() = this * degreesToRadians
+fun Float.toDegrees() = this * radiansToDegrees
 
 fun Vector2.toMeters() = scl(1 / PPM)
 fun Vector2.toPixels() = scl(PPM)
@@ -36,6 +37,8 @@ fun List<Vector2>.average() = fold(Vector2()) { acc, vector -> acc.add(vector) }
 val Body.x get() = position.x
 val Body.y get() = position.y
 
+fun ClosedRange<Float>.byPercentage(percentage: Float) = start + percentage * (endInclusive - start)
+operator fun Float.compareTo(range: ClosedRange<Float>) = if (this in range) 0 else if (this < range.start) -1 else 1
 
 fun velocityOnAngle(velocity: Float, angle: Float) = Vector2(cos(angle) * velocity, sin(angle) * velocity)
 fun Vector2.reflect(normal: Vector2) = sub(normal.scl(2 * dot(normal)))

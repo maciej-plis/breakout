@@ -19,9 +19,21 @@ import ktx.log.logger
 
 private val LOG = logger<PaddleStickingSystem>()
 
-private val ballFamily = allOf(BallComponent::class).exclude(RemoveComponent::class, StickyComponent::class).get()
+private val ballFamily = allOf(BallComponent::class).exclude(AttachComponent::class).get()
 private val paddleFamily = allOf(PaddleComponent::class, StickyComponent::class).get()
 
+/**
+ * System responsible for attaching ball to paddle when hit.
+ *
+ *  --
+ *
+ *  **ballFamily**:
+ *  - allOf: [[BallComponent]]
+ *  - exclude: [[AttachComponent]]
+ *
+ *  **paddleFamily**:
+ *  - allOf: [[PaddleComponent], [StickyComponent]]
+ */
 class PaddleStickingSystem(private val eventManager: GameEventManager<GameEvent>) : EntitySystem() {
 
     override fun update(delta: Float) {
@@ -29,7 +41,6 @@ class PaddleStickingSystem(private val eventManager: GameEventManager<GameEvent>
             .filter { ballFamily.matches(it.ballEntity) }
             .filter { paddleFamily.matches(it.paddleEntity) }
             .forEach { event ->
-                event.ballEntity += StickyComponent()
                 event.ballEntity += AttachComponent().apply {
                     targetEntity = event.paddleEntity
                     offset = calculateOffset(event.ballEntity, event.paddleEntity)
@@ -46,8 +57,6 @@ class PaddleStickingSystem(private val eventManager: GameEventManager<GameEvent>
 
         val x = clamp(body1.x, body2.x - transform2.size.halfWidth + transform1.size.halfWidth, body2.x + transform2.size.halfWidth - transform1.size.halfWidth)
 
-        val offset = Vector2(x - body2.x, transform1.size.halfHeight + transform2.size.halfHeight)
-
-        return offset
+        return Vector2(x - body2.x, transform1.size.halfHeight + transform2.size.halfHeight)
     }
 }
