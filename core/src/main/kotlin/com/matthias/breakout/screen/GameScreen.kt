@@ -30,7 +30,7 @@ import kotlin.random.Random
 
 private val LOG = logger<GameScreen>()
 
-class GameScreen(game: BreakoutGame) : ScreenBase(game) {
+class GameScreen(game: BreakoutGame) : StageScreenBase(game) {
 
     private val eventManager by lazy {
         GameEventManager<GameEvent>()
@@ -46,7 +46,7 @@ class GameScreen(game: BreakoutGame) : ScreenBase(game) {
         PooledEngine().apply {
             addSystem(PhysicsSystem(world))
             addSystem(PaddleKeyboardMovementSystem())
-            addSystem(PaddleMouseMovementSystem(camera))
+            addSystem(PaddleMouseMovementSystem(viewport))
             addSystem(PaddleBoundarySystem(0f, camera.viewportWidth))
             addSystem(AttachSystem())
             addSystem(PaddleStickingSystem(eventManager))

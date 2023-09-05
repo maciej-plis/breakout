@@ -3,8 +3,8 @@ package com.matthias.breakout.ecs.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.utils.viewport.Viewport
 import com.matthias.breakout.common.missingComponent
 import com.matthias.breakout.ecs.component.BodyComponent
 import com.matthias.breakout.ecs.component.PaddleComponent
@@ -23,7 +23,7 @@ private val FAMILY = allOf(PaddleComponent::class, BodyComponent::class).get()
  * **Family**:
  * - allOf: [[PaddleComponent], [BodyComponent]]
  */
-class PaddleMouseMovementSystem(private val camera: Camera) : IteratingSystem(FAMILY) {
+class PaddleMouseMovementSystem(private val viewport: Viewport) : IteratingSystem(FAMILY) {
 
     private val lastMousePosition = Vector3()
     private val mousePosition = Vector3()
@@ -32,10 +32,11 @@ class PaddleMouseMovementSystem(private val camera: Camera) : IteratingSystem(FA
     override fun processEntity(entity: Entity, delta: Float) {
         val bodyC = entity[BodyComponent::class] ?: return LOG.missingComponent<BodyComponent>()
 
+        viewport.apply(true)
         mousePosition.let { position ->
             if (position == lastMousePosition) return
             lastMousePosition.set(position)
-            val onScreenPosition = camera.unproject(position)
+            val onScreenPosition = viewport.camera.unproject(position)
             bodyC.setPosition(onScreenPosition.x, bodyC.y)
         }
     }

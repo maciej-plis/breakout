@@ -31,7 +31,7 @@ class RenderSystem(private val batch: Batch, private val gameViewport: Viewport)
 
     override fun update(delta: Float) {
         forceSort()
-        gameViewport.apply()
+        gameViewport.apply(true)
         batch.use(gameViewport.camera.combined) {
             super.update(delta)
         }
