@@ -3,14 +3,20 @@ package com.matthias.breakout.assets
 import com.badlogic.gdx.assets.AssetDescriptor
 import com.badlogic.gdx.assets.AssetLoaderParameters
 import com.badlogic.gdx.assets.loaders.BitmapFontLoader.BitmapFontParameter
+import com.badlogic.gdx.assets.loaders.ShaderProgramLoader
 import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter
+import com.badlogic.gdx.graphics.Color.BLACK
+import com.badlogic.gdx.graphics.Color.WHITE
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.matthias.breakout.assets.AtlasAsset.LOADING_ATLAS
 import com.matthias.breakout.assets.AtlasAsset.MENU_ATLAS
 import ktx.assets.async.AssetStorage
+import ktx.freetype.freeTypeFontParameters
 
 
 enum class TiledMapAsset(
@@ -42,6 +48,21 @@ enum class BitmapFontAsset(
     ABADDON_BOLD_36_WHITE("abaddon-bold-36-white.fnt", MENU_ATLAS)
 }
 
+enum class FreeTypeFontAsset(
+    fileName: String,
+    setup: FreeTypeFontParameter.() -> Unit,
+    directory: String = "font",
+    val descriptor: AssetDescriptor<BitmapFont> = AssetDescriptor("$directory/$fileName", freeTypeFontParameters("$directory/$fileName", setup))
+) {
+    ABADDON_BOLD_48_WHITE_OUTLINE("abaddon-bold.ttf", {
+        size = 48
+        color = WHITE
+        borderColor = BLACK
+        borderWidth = 2f
+    })
+
+}
+
 enum class SkinAsset(
     fileName: String,
     atlas: AtlasAsset,
@@ -51,6 +72,19 @@ enum class SkinAsset(
     LOADING_SKIN("loading-skin.json", LOADING_ATLAS),
     MENU_SKIN("menu-skin.json", MENU_ATLAS)
 }
+
+enum class ShaderProgramAsset(
+    vertexFileName: String,
+    fragmentFileName: String,
+    directory: String = "shader",
+    val descriptor: AssetDescriptor<ShaderProgram> = AssetDescriptor(
+        "$directory/$vertexFileName/$fragmentFileName",
+        ShaderProgramLoader.ShaderProgramParameter().apply {
+            vertexFile = "$directory/$vertexFileName"
+            fragmentFile = "$directory/$fragmentFileName"
+        }
+    )
+)
 
 fun AssetStorage.loadAsync(assets: List<AssetDescriptor<*>>) = assets.map { loadAsync(it) }
 fun AssetStorage.loadSync(assets: List<AssetDescriptor<*>>) = assets.map { loadSync(it) }

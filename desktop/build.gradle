@@ -12,6 +12,7 @@ dependencies {
     implementation libs.libGDX.backend.lwjgl3
     implementation libs.libGDX.platform, classifier("natives-desktop")
     implementation libs.libGDX.box2d.platform, classifier("natives-desktop")
+    implementation libs.libGDX.freetype.platform, classifier("natives-desktop")
 
     implementation project(":core")
 }

@@ -22,6 +22,7 @@ import de.eskalon.commons.screen.transition.ScreenTransition
 import de.eskalon.commons.screen.transition.impl.BlendingTransition
 import ktx.assets.async.AssetStorage
 import ktx.async.KtxAsync
+import ktx.freetype.async.registerFreeTypeFontLoaders
 import ktx.log.logger
 
 private val LOG = logger<BreakoutGame>()
@@ -40,6 +41,7 @@ class BreakoutGame : ManagedGame<ManagedScreen, ScreenTransition>() {
 
     val assets: AssetStorage by lazy {
         AssetStorage().apply {
+            registerFreeTypeFontLoaders()
             setLoader { TmxMapLoader() }
         }
     }

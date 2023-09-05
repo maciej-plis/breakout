@@ -10,6 +10,7 @@ dependencies {
 
     api libs.libGDX
     api libs.libGDX.box2d
+    api libs.libGDX.freetype
 
     api libs.bundles.libKTX
 
