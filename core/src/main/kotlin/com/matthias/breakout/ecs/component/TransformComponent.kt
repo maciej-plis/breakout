@@ -14,11 +14,12 @@ class TransformComponent : Component, Comparable<TransformComponent> {
     var layer = 0
     var angleDeg = 0f
 
+    var x by position::x
+    var y by position::y
+    var width by size::width
+    var height by size::height
+
     // @formatter:off
-    var x: Float get() = position.x; set(value) { position.x = value }
-    var y: Float get() = position.y; set(value) { position.y = value }
-    var width: Float get() = size.width; set(value) { size.width = value }
-    var height: Float get() = size.height; set(value) { size.height = value }
     var bottomLeftX: Float get() = x - width.half; set(value) { x = value + width.half }
     var bottomLeftY: Float get() = y - height.half; set(value) { y = value + height.half }
     // @formatter:on

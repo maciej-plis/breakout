@@ -47,6 +47,7 @@ class GameScreen(game: BreakoutGame) : StageScreenBase(game) {
             addSystem(PhysicsSystem(world))
             addSystem(PaddleKeyboardMovementSystem())
             addSystem(PaddleMouseMovementSystem(viewport))
+            addSystem(PaddleLiftSystem())
             addSystem(PaddleBoundarySystem(0f, camera.viewportWidth))
             addSystem(AttachSystem())
             addSystem(PaddleStickingSystem(eventManager))
@@ -151,12 +152,12 @@ class GameScreen(game: BreakoutGame) : StageScreenBase(game) {
                 setSpriteRegion(texture)
             }
             with<TransformComponent> {
-                this.setPosition(camera.viewportWidth / 2, 1.5f.toMeters())
+                this.setPosition(camera.viewportWidth / 2, (-5f).toMeters())
                 size.set(7f.toMeters(), 1.5f.toMeters())
             }
             entity += BodyComponent(
                 world.body {
-                    position.set(camera.viewportWidth / 2, 1.5f.toMeters())
+                    position.set(camera.viewportWidth / 2, (-5f).toMeters())
                     box(width = 7f.toMeters(), height = 1.5f.toMeters()) {
                         filter.categoryBits = PADDLE_BIT
                     }
