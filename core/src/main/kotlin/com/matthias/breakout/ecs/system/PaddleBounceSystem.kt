@@ -41,6 +41,12 @@ class PaddleBounceSystem(private val eventManager: GameEventManager<GameEvent>) 
                 val ballBodyC = event.ballEntity[BodyComponent::class] ?: return LOG.missingComponent<BodyComponent>()
                 val paddleTransformC = event.paddleEntity[TransformComponent::class] ?: return LOG.missingComponent<TransformComponent>()
 
+                val percentageFromBottom = event.paddleContactPoint.y / paddleTransformC.height
+                if (percentageFromBottom < 0.25f) {
+                    LOG.debug { "Ball hit paddle too low, ignored" }
+                    return
+                }
+
                 val percentageFromCenter = clamp(event.paddleContactPoint.x / paddleTransformC.width.half, -1f, 1f)
                 val angle = BOUNCE_DEGREES_RANGE.byPercentage(-1 * percentageFromCenter).toRadians()
 

@@ -12,7 +12,7 @@ import ktx.ashley.remove
 import ktx.log.logger
 
 private val LOG = logger<BallReleaseSystem>()
-private val FAMILY = allOf(BallComponent::class, BodyComponent::class, AttachComponent::class).get()
+private val FAMILY = allOf(PaddleComponent::class, BodyComponent::class, ShownComponent::class).get()
 
 /**
  * System responsible for releasing balls attached to paddle.
@@ -20,17 +20,21 @@ private val FAMILY = allOf(BallComponent::class, BodyComponent::class, AttachCom
  * --
  *
  * **Family**:
- * - allOf: [[BallComponent], [BodyComponent], [AttachComponent]]
+ * - allOf: [[PaddleComponent], [BodyComponent], [ShownComponent]]
  */
 class BallReleaseSystem : IteratingSystem(FAMILY) {
 
     override fun processEntity(entity: Entity, delta: Float) {
-        val bodyC = entity[BodyComponent::class] ?: return LOG.missingComponent<BodyComponent>()
-        val ballC = entity[BallComponent::class] ?: return LOG.missingComponent<BallComponent>()
-        val attachC = entity[AttachComponent::class] ?: return LOG.missingComponent<AttachComponent>()
+        if (!(Gdx.input.isButtonPressed(LEFT) or Gdx.input.isKeyPressed(SPACE))) return
 
-        if (Gdx.input.isButtonPressed(LEFT) or Gdx.input.isKeyPressed(SPACE)) {
-            entity.remove<AttachComponent>()
+        val paddleC = entity[PaddleComponent::class] ?: return LOG.missingComponent<PaddleComponent>()
+
+        paddleC.stickingBalls.forEach { ballEntity ->
+            val bodyC = ballEntity[BodyComponent::class] ?: return LOG.missingComponent<BodyComponent>()
+            val ballC = ballEntity[BallComponent::class] ?: return LOG.missingComponent<BallComponent>()
+            val attachC = ballEntity[AttachComponent::class] ?: return LOG.missingComponent<AttachComponent>()
+
+            ballEntity.remove<AttachComponent>()
 
             val paddleContactPoint = attachC.offset
             val paddleTransformC = attachC.targetEntity!![TransformComponent::class]!!
@@ -42,5 +46,7 @@ class BallReleaseSystem : IteratingSystem(FAMILY) {
             bodyC.setAngle(angle)
             bodyC.setVelocity(velocityOnAngle(ballC.velocity, angle))
         }
+
+        paddleC.stickingBalls.clear()
     }
 }

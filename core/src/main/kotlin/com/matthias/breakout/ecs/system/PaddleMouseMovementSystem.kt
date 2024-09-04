@@ -8,12 +8,13 @@ import com.badlogic.gdx.utils.viewport.Viewport
 import com.matthias.breakout.common.missingComponent
 import com.matthias.breakout.ecs.component.BodyComponent
 import com.matthias.breakout.ecs.component.PaddleComponent
+import com.matthias.breakout.ecs.component.ShownComponent
 import com.matthias.breakout.ecs.component.get
 import ktx.ashley.allOf
 import ktx.log.logger
 
 private val LOG = logger<PaddleMouseMovementSystem>()
-private val FAMILY = allOf(PaddleComponent::class, BodyComponent::class).get()
+private val FAMILY = allOf(PaddleComponent::class, BodyComponent::class, ShownComponent::class).get()
 
 /**
  * System responsible for controlling paddle with mouse.
@@ -21,7 +22,7 @@ private val FAMILY = allOf(PaddleComponent::class, BodyComponent::class).get()
  * --
  *
  * **Family**:
- * - allOf: [[PaddleComponent], [BodyComponent]]
+ * - allOf: [[PaddleComponent], [BodyComponent], [ShownComponent]]
  */
 class PaddleMouseMovementSystem(private val viewport: Viewport) : IteratingSystem(FAMILY) {
 

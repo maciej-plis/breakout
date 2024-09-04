@@ -11,6 +11,7 @@ import com.matthias.breakout.event.GameEventManager
 import ktx.ashley.allOf
 import ktx.ashley.exclude
 import ktx.ashley.plusAssign
+import ktx.ashley.remove
 import ktx.log.logger
 
 private val LOG = logger<GameOverSystem>()
@@ -42,11 +43,11 @@ class GameOverSystem(
             entity += RemoveComponent()
             eventManager.addEvent(GameOverEvent)
 
-            engine.getEntitiesFor(BALL_FAMILY).forEach { println(it) }
-            println(entity)
-
             if (engine.getEntitiesFor(BALL_FAMILY).filterNot { it == entity }.none()) {
-                engine.getEntitiesFor(PADDLE_FAMILY).forEach { it += HideComponent() }
+                engine.getEntitiesFor(PADDLE_FAMILY).forEach {
+                    it.remove<ShownComponent>()
+                    it += HideComponent()
+                }
             }
         }
     }

@@ -8,7 +8,7 @@ import ktx.ashley.mapperFor
 import ktx.collections.set
 import kotlin.reflect.KClass
 
-val mappers = ObjectMap<KClass<out Component>, ComponentMapper<out Component>>();
+val mappers = ObjectMap<KClass<out Component>, ComponentMapper<out Component>>()
 
 @Suppress("UNCHECKED_CAST")
 inline fun <reified T : Component> getMapperFor(): ComponentMapper<T> = (mappers[T::class] ?: registerMapper<T>()) as ComponentMapper<T>

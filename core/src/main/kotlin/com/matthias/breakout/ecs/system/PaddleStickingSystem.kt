@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils.clamp
 import com.badlogic.gdx.math.Vector2
 import com.matthias.breakout.common.halfHeight
 import com.matthias.breakout.common.halfWidth
+import com.matthias.breakout.common.missingComponent
 import com.matthias.breakout.common.x
 import com.matthias.breakout.ecs.component.*
 import com.matthias.breakout.event.GameEvent
@@ -41,6 +42,8 @@ class PaddleStickingSystem(private val eventManager: GameEventManager<GameEvent>
             .filter { ballFamily.matches(it.ballEntity) }
             .filter { paddleFamily.matches(it.paddleEntity) }
             .forEach { event ->
+                val paddleC = event.paddleEntity[PaddleComponent::class] ?: return LOG.missingComponent<PaddleComponent>()
+                paddleC.stickingBalls.add(event.ballEntity)
                 event.ballEntity += AttachComponent().apply {
                     targetEntity = event.paddleEntity
                     offset = calculateOffset(event.ballEntity, event.paddleEntity)

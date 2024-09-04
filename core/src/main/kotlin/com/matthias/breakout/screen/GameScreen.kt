@@ -10,6 +10,7 @@ import com.matthias.breakout.BreakoutGame
 import com.matthias.breakout.assets.AtlasAsset.BREAKOUT_ATLAS
 import com.matthias.breakout.assets.TiledMapAsset.LEVEL_1
 import com.matthias.breakout.common.get
+import com.matthias.breakout.common.missingComponent
 import com.matthias.breakout.common.toMeters
 import com.matthias.breakout.contact.*
 import com.matthias.breakout.ecs.component.*
@@ -47,7 +48,8 @@ class GameScreen(game: BreakoutGame) : StageScreenBase(game) {
             addSystem(PhysicsSystem(world))
             addSystem(PaddleKeyboardMovementSystem())
             addSystem(PaddleMouseMovementSystem(viewport))
-            addSystem(PaddleLiftSystem())
+            addSystem(PaddleShowSystem())
+            addSystem(PaddleHideSystem())
             addSystem(PaddleBoundarySystem(0f, camera.viewportWidth))
             addSystem(AttachSystem())
             addSystem(PaddleStickingSystem(eventManager))
@@ -148,6 +150,7 @@ class GameScreen(game: BreakoutGame) : StageScreenBase(game) {
         val texture = atlas["paddle-m"]
         return engine.entity {
             with<PaddleComponent>()
+            with<ShowComponent>()
             with<GraphicComponent> {
                 setSpriteRegion(texture)
             }
@@ -170,8 +173,8 @@ class GameScreen(game: BreakoutGame) : StageScreenBase(game) {
     private fun createBall(paddle: Entity) {
         val atlas = assets[BREAKOUT_ATLAS.descriptor]
         val texture = atlas["ball"]
-        engine.entity {
-            with<BallComponent>() {
+        val ball = engine.entity {
+            with<BallComponent> {
                 velocity = 32f.toMeters()
             }
             with<TransformComponent> {
@@ -200,6 +203,9 @@ class GameScreen(game: BreakoutGame) : StageScreenBase(game) {
                 }
             )
         }
+
+        val paddleC = paddle[PaddleComponent::class] ?: return LOG.missingComponent<PaddleComponent>()
+        paddleC.stickingBalls.add(ball)
     }
 
     private fun createBlocks() {

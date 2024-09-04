@@ -34,7 +34,8 @@ class GameEventManager<T : GameEvent> {
 
     val eventQueue = ArrayList<T>()
 
-    inline fun <reified U : T> getEventsOfType(): List<U> = eventQueue
+    inline fun <reified U : T> getEventsOfType(): Sequence<U> = eventQueue
+        .asSequence()
         .filterIsInstance<U>()
         .filter { !it.handled }
 
@@ -43,7 +44,7 @@ class GameEventManager<T : GameEvent> {
     }
 
     inline fun <reified U : T> forEventsOfType(block: (List<U>) -> Unit) {
-        val events = getEventsOfType<U>()
+        val events = getEventsOfType<U>().toList()
         if (events.isNotEmpty()) {
             block(events)
         }

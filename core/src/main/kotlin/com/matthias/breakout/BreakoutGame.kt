@@ -50,7 +50,7 @@ class BreakoutGame : ManagedGame<ManagedScreen, ScreenTransition>() {
 
     override fun create() {
         LOG.info { "Creating ${javaClass.simpleName}" }
-        super.create();
+        super.create()
 
         Gdx.app.logLevel = Application.LOG_DEBUG
 
