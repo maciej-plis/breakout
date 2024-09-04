@@ -14,7 +14,7 @@ import kotlin.math.abs
 import kotlin.math.sign
 
 private val LOG = logger<BallAngleBoundarySystem>()
-private val FAMILY = allOf(BallComponent::class, BodyComponent::class).exclude(RemoveComponent::class, StickyComponent::class).get()
+private val FAMILY = allOf(BallComponent::class, BodyComponent::class).exclude(RemoveComponent::class, AttachComponent::class).get()
 
 private val BALL_ALLOWED_DEGREES_RANGE = 30f..150f
 
@@ -25,7 +25,7 @@ private val BALL_ALLOWED_DEGREES_RANGE = 30f..150f
  *
  * **Family**:
  * - allOf: [[BallComponent], [BodyComponent]]
- * - exclude: [[RemoveComponent], [StickyComponent]]
+ * - exclude: [[RemoveComponent], [AttachComponent]]
  */
 class BallAngleBoundarySystem : IteratingSystem(FAMILY) {
 

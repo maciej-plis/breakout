@@ -178,7 +178,7 @@ class GameScreen(game: BreakoutGame) : StageScreenBase(game) {
                 velocity = 32f.toMeters()
             }
             with<TransformComponent> {
-                this.setPosition(camera.viewportWidth / 2, 10f.toMeters())
+                this.setPosition(camera.viewportWidth / 2, (-5f).toMeters())
                 size.set(1.25f, 1.25f).toMeters()
             }
             with<GraphicComponent> {
@@ -191,7 +191,7 @@ class GameScreen(game: BreakoutGame) : StageScreenBase(game) {
             }
             entity += BodyComponent(
                 world.body(type = DynamicBody) {
-                    position.set(camera.viewportWidth / 2, 10f.toMeters())
+                    position.set(camera.viewportWidth / 2, (-5f).toMeters())
                     circle((1.25f / 2).toMeters()) {
                         filter.categoryBits = BALL_BIT
                         filter.maskBits = BALL_BIT.inv()
