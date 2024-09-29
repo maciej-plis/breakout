@@ -5,6 +5,8 @@ import com.badlogic.gdx.assets.AssetLoaderParameters
 import com.badlogic.gdx.assets.loaders.BitmapFontLoader.BitmapFontParameter
 import com.badlogic.gdx.assets.loaders.ShaderProgramLoader
 import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter
+import com.badlogic.gdx.audio.Music
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Color.BLACK
 import com.badlogic.gdx.graphics.Color.WHITE
 import com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -64,6 +66,28 @@ enum class FreeTypeFontAsset(
         borderWidth = 2f
     })
 
+}
+
+enum class SoundAsset(
+    fileName: String,
+    directory: String = "sfx",
+    val descriptor: AssetDescriptor<Sound> = AssetDescriptor("$directory/$fileName")
+) {
+    PADDLE_HIT("paddle-hit.wav"),
+    WALL_HIT("wall-hit.wav"),
+    REINFORCED_BLOCK_HIT("reinforced-block-hit.wav"),
+    BLOCK_DESTROYED("block-destroyed.wav"),
+    BALL_DROP("ball-drop.wav"),
+    DEATH("death.wav"),
+    GAME_OVER("game-over.wav"),
+    LEVEL_COMPLETED("level-completed.wav")
+}
+
+enum class MusicAsset(
+    fileName: String,
+    directory: String = "music",
+    val descriptor: AssetDescriptor<Music> = AssetDescriptor("$directory/$fileName")
+) {
 }
 
 enum class SkinAsset(

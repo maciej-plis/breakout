@@ -2,6 +2,8 @@ package com.matthias.breakout.ecs.system
 
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.gdx.math.MathUtils.clamp
+import com.matthias.breakout.assets.SoundAsset
+import com.matthias.breakout.audio.AudioService
 import com.matthias.breakout.common.*
 import com.matthias.breakout.ecs.component.*
 import com.matthias.breakout.event.GameEvent
@@ -30,7 +32,10 @@ private val BOUNCE_DEGREES_RANGE = 90f..150f
  * - allOf: [[PaddleComponent]]
  * - exclude: [[StickyComponent]]
  */
-class PaddleBounceSystem(private val eventManager: GameEventManager<GameEvent>) : EntitySystem() {
+class PaddleBounceSystem(
+    private val eventManager: GameEventManager<GameEvent>,
+    private val audio: AudioService
+) : EntitySystem() {
 
     override fun update(delta: Float) {
         eventManager.getEventsOfType<BallPaddleHit>()
@@ -40,6 +45,8 @@ class PaddleBounceSystem(private val eventManager: GameEventManager<GameEvent>) 
                 val ballC = event.ballEntity[BallComponent::class] ?: return LOG.missingComponent<BallComponent>()
                 val ballBodyC = event.ballEntity[BodyComponent::class] ?: return LOG.missingComponent<BodyComponent>()
                 val paddleTransformC = event.paddleEntity[TransformComponent::class] ?: return LOG.missingComponent<TransformComponent>()
+
+                audio.play(SoundAsset.PADDLE_HIT)
 
                 val percentageFromBottom = event.paddleContactPoint.y / paddleTransformC.height
                 if (percentageFromBottom < 0.25f) {
@@ -51,6 +58,7 @@ class PaddleBounceSystem(private val eventManager: GameEventManager<GameEvent>) 
                 val angle = BOUNCE_DEGREES_RANGE.byPercentage(-1 * percentageFromCenter).toRadians()
 
                 LOG.debug { "Ball hit paddle, reflected on angle: ${angle.toDegrees()}" }
+
                 ballBodyC.setAngle(angle)
                 ballBodyC.setVelocity(velocityOnAngle(ballC.velocity, angle))
             }

@@ -1,6 +1,8 @@
 package com.matthias.breakout.ecs.system
 
 import com.badlogic.ashley.core.EntitySystem
+import com.matthias.breakout.assets.SoundAsset.PADDLE_HIT
+import com.matthias.breakout.audio.AudioService
 import com.matthias.breakout.common.missingComponent
 import com.matthias.breakout.common.reflect
 import com.matthias.breakout.common.toDegrees
@@ -33,7 +35,10 @@ private val WALL_FAMILY = allOf(WallComponent::class).get()
  * **wallFamily**:
  * - allOf: [[WallComponent]]
  */
-class WallBounceSystem(private val eventManager: GameEventManager<GameEvent>) : EntitySystem() {
+class WallBounceSystem(
+    private val eventManager: GameEventManager<GameEvent>,
+    private val audio: AudioService
+) : EntitySystem() {
 
     override fun update(delta: Float) {
         eventManager.getEventsOfType<BallWallHit>()
@@ -46,6 +51,8 @@ class WallBounceSystem(private val eventManager: GameEventManager<GameEvent>) : 
                 val reflectedAngle = event.ballContactVelocity.reflect(event.contactNormal).angleRad()
 
                 LOG.debug { "Ball hit wall, reflected on angle ${reflectedAngle.toDegrees()}" }
+
+                audio.play(PADDLE_HIT)
                 bodyC.setAngle(reflectedAngle)
                 bodyC.setVelocity(velocityOnAngle(ballC.velocity, reflectedAngle))
             }

@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
 import com.badlogic.gdx.physics.box2d.World
 import com.matthias.breakout.BreakoutGame
 import com.matthias.breakout.assets.AtlasAsset.BREAKOUT_ATLAS
-import com.matthias.breakout.assets.TiledMapAsset.LEVEL_1
+import com.matthias.breakout.assets.TiledMapAsset.LEVEL_3
 import com.matthias.breakout.common.get
 import com.matthias.breakout.common.missingComponent
 import com.matthias.breakout.common.toMeters
@@ -54,12 +54,12 @@ class GameScreen(game: BreakoutGame) : StageScreenBase(game) {
             addSystem(AttachSystem())
             addSystem(PaddleStickingSystem(eventManager))
             addSystem(BallReleaseSystem())
-            addSystem(PaddleBounceSystem(eventManager))
-            addSystem(WallBounceSystem(eventManager))
+            addSystem(PaddleBounceSystem(eventManager, audio))
+            addSystem(WallBounceSystem(eventManager, audio))
             addSystem(BlockBounceSystem(eventManager))
             addSystem(BallAngleBoundarySystem())
-            addSystem(BlockDestroySystem(eventManager))
-            addSystem(GameOverSystem(eventManager, 0f))
+            addSystem(BlockDestroySystem(eventManager, audio))
+            addSystem(GameOverSystem(eventManager, audio, 0f))
             addSystem(DebugSystem { createBall(this.getEntitiesFor(allOf(PaddleComponent::class).get()).first()) })
             addSystem(RemoveSystem(world))
             addSystem(PhysicsSyncSystem())
@@ -84,6 +84,7 @@ class GameScreen(game: BreakoutGame) : StageScreenBase(game) {
     }
 
     override fun update(delta: Float) {
+        audio.update()
         engine.update(delta)
         eventManager.clear()
     }
@@ -210,7 +211,7 @@ class GameScreen(game: BreakoutGame) : StageScreenBase(game) {
 
     private fun createBlocks() {
         val atlas = assets[BREAKOUT_ATLAS.descriptor]
-        val level1 = assets[LEVEL_1.descriptor]
+        val level1 = assets[LEVEL_3.descriptor]
 
         level1.forEachMapObject("blocks") {
             val texture = atlas[it.property("texture")]

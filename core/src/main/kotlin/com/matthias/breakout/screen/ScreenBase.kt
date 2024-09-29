@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.matthias.breakout.BreakoutGame
+import com.matthias.breakout.audio.AudioService
 import de.eskalon.commons.screen.ManagedScreen
 import ktx.assets.async.AssetStorage
 import ktx.collections.GdxArray
@@ -21,7 +22,8 @@ abstract class ScreenBase(
     val game: BreakoutGame,
     val batch: Batch = game.batch,
     val assets: AssetStorage = game.assets,
-    val camera: Camera = game.camera
+    val camera: Camera = game.camera,
+    val audio: AudioService = game.audio
 ) : ManagedScreen() {
 
     internal open val clearColor: Color = BG_COLOR

@@ -8,6 +8,8 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.math.Interpolation.pow2In
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.matthias.breakout.audio.AudioService
+import com.matthias.breakout.audio.DefaultAudioService
 import com.matthias.breakout.common.addScreen
 import com.matthias.breakout.common.addScreenTransition
 import com.matthias.breakout.common.pushScreen
@@ -40,6 +42,8 @@ class BreakoutGame : ManagedGame<ManagedScreen, ScreenTransition>() {
     val gameViewport = ExtendViewport(V_WIDTH.toMeters(), V_HEIGHT.toMeters(), camera)
 
     val stageBuilder = SceneComposerStageBuilder()
+
+    val audio: AudioService by lazy { DefaultAudioService(assets) }
 
     val assets: AssetStorage by lazy {
         AssetStorage().apply {
