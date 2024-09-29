@@ -8,7 +8,7 @@ import com.matthias.breakout.BreakoutGame
 import com.matthias.breakout.assets.AtlasAsset.*
 import com.matthias.breakout.assets.SkinAsset.LOADING_SKIN
 import com.matthias.breakout.assets.SkinAsset.MENU_SKIN
-import com.matthias.breakout.assets.TiledMapAsset.LEVEL_1
+import com.matthias.breakout.assets.TiledMapAsset.*
 import com.matthias.breakout.assets.loadAsync
 import com.matthias.breakout.assets.loadSync
 import com.matthias.breakout.common.pushScreen
@@ -25,7 +25,10 @@ private val REQUIRED_GAME_ASSETS = listOf(
     MENU_ATLAS.descriptor,
     MENU_SKIN.descriptor,
     BREAKOUT_ATLAS.descriptor,
-    LEVEL_1.descriptor
+    LEVEL_1.descriptor,
+    LEVEL_2.descriptor,
+    LEVEL_3.descriptor,
+    LEVEL_4.descriptor,
 )
 
 class LoadingScreen(game: BreakoutGame) : StageScreenBase(game) {

@@ -14,9 +14,9 @@ import kotlin.math.max
 private val LOG = logger<PaddleHideSystem>()
 private val FAMILY = allOf(PaddleComponent::class, BodyComponent::class, HideComponent::class).get()
 
-private val TOP_POSITION = 1.5f.toMeters()
+private val TOP_POSITION = 6.25f.toMeters()
 private val BOTTOM_POSITION = (-3f).toMeters()
-private val TRANSITION_SPEED = 0.25f.toMeters()
+private val TRANSITION_SPEED = 0.5f.toMeters()
 
 /**
  * System responsible for hiding paddle.

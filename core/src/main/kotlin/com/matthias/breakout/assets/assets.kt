@@ -24,7 +24,10 @@ enum class TiledMapAsset(
     directory: String = "tiled-map",
     val descriptor: AssetDescriptor<TiledMap> = AssetDescriptor("$directory/$fileName")
 ) {
-    LEVEL_1("level-1.tmx")
+    LEVEL_1("level-1.tmx"),
+    LEVEL_2("level-2.tmx"),
+    LEVEL_3("level-3.tmx"),
+    LEVEL_4("level-4.tmx"),
 }
 
 enum class AtlasAsset(

@@ -175,7 +175,7 @@ class GameScreen(game: BreakoutGame) : StageScreenBase(game) {
         val texture = atlas["ball"]
         val ball = engine.entity {
             with<BallComponent> {
-                velocity = 32f.toMeters()
+                velocity = 34f.toMeters()
             }
             with<TransformComponent> {
                 this.setPosition(camera.viewportWidth / 2, (-5f).toMeters())

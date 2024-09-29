@@ -19,7 +19,9 @@ import com.ray3k.stripe.scenecomposer.SceneComposerStageBuilder
 import de.eskalon.commons.core.ManagedGame
 import de.eskalon.commons.screen.ManagedScreen
 import de.eskalon.commons.screen.transition.ScreenTransition
+import de.eskalon.commons.screen.transition.SlidingTransition
 import de.eskalon.commons.screen.transition.impl.BlendingTransition
+import de.eskalon.commons.screen.transition.impl.SlidingDirection
 import ktx.assets.async.AssetStorage
 import ktx.async.KtxAsync
 import ktx.freetype.async.registerFreeTypeFontLoaders
@@ -27,8 +29,8 @@ import ktx.log.logger
 
 private val LOG = logger<BreakoutGame>()
 
-private const val V_WIDTH = 48f
-private const val V_HEIGHT = 36f
+private const val V_WIDTH = 61f
+private const val V_HEIGHT = 61f
 const val PPM = 16f
 
 class BreakoutGame : ManagedGame<ManagedScreen, ScreenTransition>() {
@@ -61,6 +63,7 @@ class BreakoutGame : ManagedGame<ManagedScreen, ScreenTransition>() {
         addScreen(GameScreen(this))
 
         addScreenTransition(BlendingTransition(batch, 0.15f, pow2In))
+        addScreenTransition(SlidingTransition(batch, SlidingDirection.LEFT, true, .25f, pow2In))
 
         pushScreen<LoadingScreen>()
     }
