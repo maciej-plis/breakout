@@ -8,6 +8,7 @@ import com.matthias.breakout.common.halfHeight
 import com.matthias.breakout.common.halfWidth
 import com.matthias.breakout.common.missingComponent
 import com.matthias.breakout.common.x
+import com.matthias.breakout.contact.BALL_BIT
 import com.matthias.breakout.ecs.component.*
 import com.matthias.breakout.event.GameEvent
 import com.matthias.breakout.event.GameEvent.BallPaddleHit
@@ -16,6 +17,7 @@ import ktx.ashley.allOf
 import ktx.ashley.exclude
 import ktx.ashley.plusAssign
 import ktx.log.logger
+import kotlin.experimental.inv
 
 
 private val LOG = logger<PaddleStickingSystem>()
@@ -43,11 +45,13 @@ class PaddleStickingSystem(private val eventManager: GameEventManager<GameEvent>
             .filter { paddleFamily.matches(it.paddleEntity) }
             .forEach { event ->
                 val paddleC = event.paddleEntity[PaddleComponent::class] ?: return LOG.missingComponent<PaddleComponent>()
+                val ballBodyC = event.ballEntity[BodyComponent::class] ?: return LOG.missingComponent<BodyComponent>()
                 paddleC.stickingBalls.add(event.ballEntity)
                 event.ballEntity += AttachComponent().apply {
                     targetEntity = event.paddleEntity
                     offset = calculateOffset(event.ballEntity, event.paddleEntity)
                 }
+                ballBodyC.body.fixtureList.forEach { it.filterData.maskBits = 0 }
             }
     }
 

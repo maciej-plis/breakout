@@ -195,7 +195,7 @@ class GameScreen(game: BreakoutGame) : StageScreenBase(game) {
                     position.set(camera.viewportWidth / 2, (-5f).toMeters())
                     circle((1.25f / 2).toMeters()) {
                         filter.categoryBits = BALL_BIT
-                        filter.maskBits = BALL_BIT.inv()
+                        filter.maskBits = 0
                         restitution = 1f
                     }
                     userData = entity

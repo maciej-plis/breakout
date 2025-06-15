@@ -6,10 +6,12 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input.Buttons.LEFT
 import com.badlogic.gdx.Input.Keys.SPACE
 import com.matthias.breakout.common.*
+import com.matthias.breakout.contact.BALL_BIT
 import com.matthias.breakout.ecs.component.*
 import ktx.ashley.allOf
 import ktx.ashley.remove
 import ktx.log.logger
+import kotlin.experimental.inv
 
 private val LOG = logger<BallReleaseSystem>()
 private val FAMILY = allOf(PaddleComponent::class, BodyComponent::class, ShownComponent::class).get()
@@ -45,6 +47,7 @@ class BallReleaseSystem : IteratingSystem(FAMILY) {
             LOG.debug { "Ball released on angle: ${angle.toDegrees()}" }
             bodyC.setAngle(angle)
             bodyC.setVelocity(velocityOnAngle(ballC.velocity, angle))
+            bodyC.body.fixtureList.forEach { it.filterData.maskBits = BALL_BIT.inv() }
         }
 
         paddleC.stickingBalls.clear()
